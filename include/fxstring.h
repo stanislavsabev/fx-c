@@ -1,6 +1,7 @@
 #if !defined(FX_FXSTRING_H_)
 #define FX_FXSTRING_H_
 
+#include <stdbool.h>
 #include <stdlib.h>
 
 ///
@@ -19,6 +20,10 @@
 #define FXSTR_REPT_LITERAL(HUNDREDS, TENS, ONES, X)                             \
     FXSTR_REPT_LITERAL##HUNDREDS(FXSTR_REPT_LITERAL10(FXSTR_REPT_LITERAL10(X))) \
         FXSTR_REPT_LITERAL##TENS(FXSTR_REPT_LITERAL10(X)) FXSTR_REPT_LITERAL##ONES(X)
+
+static inline char* bool_to_str(bool iso) {
+    return iso ? "true" : "false";
+}
 
 /**
  * @brief Fx string - struct with <string> and <len>.
