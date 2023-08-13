@@ -5,21 +5,29 @@
 #include <stdlib.h>
 
 ///
-#define FXSTR_REPT_LITERAL0(X)
-#define FXSTR_REPT_LITERAL1(X) X
-#define FXSTR_REPT_LITERAL2(X) FXSTR_REPT_LITERAL1(X) X
-#define FXSTR_REPT_LITERAL3(X) FXSTR_REPT_LITERAL2(X) X
-#define FXSTR_REPT_LITERAL4(X) FXSTR_REPT_LITERAL3(X) X
-#define FXSTR_REPT_LITERAL5(X) FXSTR_REPT_LITERAL4(X) X
-#define FXSTR_REPT_LITERAL6(X) FXSTR_REPT_LITERAL5(X) X
-#define FXSTR_REPT_LITERAL7(X) FXSTR_REPT_LITERAL6(X) X
-#define FXSTR_REPT_LITERAL8(X) FXSTR_REPT_LITERAL7(X) X
-#define FXSTR_REPT_LITERAL9(X) FXSTR_REPT_LITERAL8(X) X
-#define FXSTR_REPT_LITERAL10(X) FXSTR_REPT_LITERAL9(X) X
+#define fxstr_rept_lit0(s)
+#define fxstr_rept_lit1(s) s
+#define fxstr_rept_lit2(s) fxstr_rept_lit1(s) s
+#define fxstr_rept_lit3(s) fxstr_rept_lit2(s) s
+#define fxstr_rept_lit4(s) fxstr_rept_lit3(s) s
+#define fxstr_rept_lit5(s) fxstr_rept_lit4(s) s
+#define fxstr_rept_lit6(s) fxstr_rept_lit5(s) s
+#define fxstr_rept_lit7(s) fxstr_rept_lit6(s) s
+#define fxstr_rept_lit8(s) fxstr_rept_lit7(s) s
+#define fxstr_rept_lit9(s) fxstr_rept_lit8(s) s
+#define fxstr_rept_lit10(s) fxstr_rept_lit9(s) s
 
-#define FXSTR_REPT_LITERAL(HUNDREDS, TENS, ONES, X)                             \
-    FXSTR_REPT_LITERAL##HUNDREDS(FXSTR_REPT_LITERAL10(FXSTR_REPT_LITERAL10(X))) \
-        FXSTR_REPT_LITERAL##TENS(FXSTR_REPT_LITERAL10(X)) FXSTR_REPT_LITERAL##ONES(X)
+/**
+ * @brief Repeat string literal
+ * @param hundreds number from 0 to 10
+ * @param tens number from 0 to 10
+ * @param ones number from 0 to 10
+ * @param s string to repeat
+ * @returns repeated string literal
+ */
+#define fxstr_rept_lit(hundreds, tens, ones, s)                             \
+    fxstr_rept_lit##hundreds(fxstr_rept_lit10(fxstr_rept_lit10(s))) \
+        fxstr_rept_lit##tens(fxstr_rept_lit10(s)) fxstr_rept_lit##ones(s)
 
 static inline char* bool_to_str(bool iso) {
     return iso ? "true" : "false";
