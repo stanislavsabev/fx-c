@@ -29,17 +29,17 @@
     fxstr_rept_lit##hundreds(fxstr_rept_lit10(fxstr_rept_lit10(s))) \
         fxstr_rept_lit##tens(fxstr_rept_lit10(s)) fxstr_rept_lit##ones(s)
 
-static inline char* bool_to_str(bool iso) {
+static inline char* fxstr_bool_to_str(bool iso) {
     return iso ? "true" : "false";
 }
 
 /**
- * @brief Fx string - struct with <string> and <len>.
+ * @brief fxstr - struct with <string> and <len>.
  */
-typedef struct FxStr {
+typedef struct {
     size_t len;
     char* s;
-} FxStr;
+} fxstr;
 
 /**
  * @brief Trims string <s> and writes the result onto <trimmed>.
@@ -47,6 +47,6 @@ typedef struct FxStr {
  * @param trimmed buffer with at least len size, to hold the result
  * @returns number of characters trimmed
  */
-int fxstr_trim(FxStr* s, FxStr* trimmed);
+int fxstr_trim(fxstr* s, fxstr* trimmed);
 
 #endif   // FX_FXSTRING_H_
