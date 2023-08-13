@@ -2,8 +2,8 @@
 
 # Compiler and flags
 CC = gcc
-CFLAGS = -Wall -Wextra -I./include -fPIC -g
-
+CFLAGS = -Wall -Wextra -fPIC -g
+LFLAGS = -I./include
 
 # Directories
 SRC_DIR = ./src
@@ -16,8 +16,8 @@ SRCS := $(foreach x, $(SRC_DIR), $(wildcard $(addprefix $(x)/*,.c*)))
 OBJS := $(addprefix $(OBJ_DIR)/, $(addsuffix .o, $(notdir $(basename $(SRCS)))))
 
 # Library name
-LIBRARY = fxlib.a
-SHARED_LIBRARY = fxlib.so
+LIBRARY = libfxc.a
+SHARED_LIBRARY = libfxc.so
 
 
 all: static shared
@@ -36,11 +36,11 @@ shared: makedir $(OBJS)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(OBJ_DIR)
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) $(LFLAGS) -c $< -o $@
 
 
 clean:
-	rm -rf $(OBJ_DIR) $(LIB_DIR)/$(LIBRARY) $(LIB_DIR)/$(SHARED_LIBRARY)
+	rm -rf $(OBJ_DIR) $(LIB_DIR)/*
 
 
 makedir: ## Create buld directories
