@@ -1,5 +1,5 @@
 
-#include "fxstring.h"
+#include "fxstr.h"
 
 #include <assert.h>
 #include <stdlib.h>

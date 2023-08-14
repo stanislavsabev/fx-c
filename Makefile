@@ -24,6 +24,7 @@ all: static
 
 
 rebuild: clean static
+rb: rebuild
 
 
 static: makedir $(OBJS)
@@ -41,10 +42,11 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 
 clean:
 	rm -rf $(OBJ_DIR) $(LIB_DIR)/*
+c: clean
 
 
 makedir: ## Create buld directories
 	@mkdir -p $(INC_DIR) $(OBJ_DIR) $(LIB_DIR)
 
 
-.PHONY: clean static shared rebuild
+.PHONY: static shared c clean rb rebuild  
