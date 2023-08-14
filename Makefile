@@ -20,10 +20,10 @@ LIBRARY = libfxc.a
 SHARED_LIBRARY = libfxc.so
 
 
-all: static shared
+all: static
 
 
-rebuild: clean static shared
+rebuild: clean static
 
 
 static: makedir $(OBJS)

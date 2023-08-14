@@ -38,15 +38,14 @@ static inline char* fxstr_bool_to_str(bool iso) {
  */
 typedef struct {
     size_t len;
-    char* s;
+    char* data;
 } fxstr;
 
 /**
  * @brief Trims string <s> and writes the result onto <trimmed>.
  * @param s string to trim
- * @param trimmed buffer with at least len size, to hold the result
- * @returns number of characters trimmed
+ * @returns trimmed fxstr
  */
-int fxstr_trim(fxstr* s, fxstr* trimmed);
+fxstr fxstr_trim(fxstr* s);
 
 #endif   // FX_FXSTRING_H_
