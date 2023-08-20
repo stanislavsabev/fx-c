@@ -23,15 +23,15 @@ SHARED_LIBRARY = libfxc.so
 all: static
 
 
-rebuild: clean static
-rb: rebuild
+rb: rebuild ##
+rebuild: clean static ## Rebuild
 
 
-static: makedir $(OBJS)
+static: makedir $(OBJS) ## Build static library
 	ar rcs $(LIB_DIR)/$(LIBRARY) $(OBJS)
 
 
-shared: makedir $(OBJS)
+shared: makedir $(OBJS) ## Build shared library
 	$(CC) -shared -o $(LIB_DIR)/$(SHARED_LIBRARY) $(OBJS)
 
 
@@ -40,13 +40,18 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	$(CC) $(CFLAGS) $(LFLAGS) -c $< -o $@
 
 
-clean:
+c: clean ##
+clean: ## Clean up
 	rm -rf $(OBJ_DIR) $(LIB_DIR)/*
-c: clean
 
 
-makedir: ## Create buld directories
+makedirs: ## Create buld directories
 	@mkdir -p $(INC_DIR) $(OBJ_DIR) $(LIB_DIR)
 
+h: help ##
+help: ## Show this message
+	@awk 'BEGIN {FS = ":.*##"; printf "Usage:\n  make  \033[36m<target>\033[0m\n\nTargets:\n"} \
+    /^[a-zA-Z_-]+:.*?##/ { if(length($$2) == 0 ) { printf "\033[36m%7s\033[0m", $$1 } \
+							  else { printf "\t\033[36m%-10s\033[0m %s\n", $$1, $$2 }}' $(MAKEFILE_LIST)
 
-.PHONY: static shared c clean rb rebuild  
+.PHONY: static shared c clean rb rebuild makedirs
