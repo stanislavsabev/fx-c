@@ -14,6 +14,8 @@ LIB_DIR = ./lib
 # Source files and object files
 SRCS := $(foreach x, $(SRC_DIR), $(wildcard $(addprefix $(x)/*,.c*)))
 OBJS := $(addprefix $(OBJ_DIR)/, $(addsuffix .o, $(notdir $(basename $(SRCS)))))
+SRC_HEADERS=$(wildcard $(SRC_DIR)/*.h)
+INC_HEADERS=$(wildcard $(INC_DIR)/*.h)
 
 # Library name
 LIBRARY = libfxc.a
@@ -27,12 +29,15 @@ rb: rebuild ##
 rebuild: clean static ## Rebuild
 
 
-static: makedir $(OBJS) ## Build static library
+static: makedirs headers $(OBJS) ## Build static library
 	ar rcs $(LIB_DIR)/$(LIBRARY) $(OBJS)
 
 
-shared: makedir $(OBJS) ## Build shared library
+shared: makedirs headers $(OBJS) ## Build shared library
 	$(CC) -shared -o $(LIB_DIR)/$(SHARED_LIBRARY) $(OBJS)
+
+
+headers: $(SRC_HEADERS) $(INC_HEADERS)
 
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
@@ -49,7 +54,7 @@ makedirs: ## Create buld directories
 	@mkdir -p $(INC_DIR) $(OBJ_DIR) $(LIB_DIR)
 
 format: ## Format with clang-format
-	@clang-format -i $(SRCS)
+	@clang-format -i $(SRCS) $(SRC_HEADERS) $(INC_HEADERS)
 
 h: help ##
 help: ## Show this message

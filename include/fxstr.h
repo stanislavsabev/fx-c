@@ -43,7 +43,6 @@ typedef struct {
     char data[];
 } fxstr;
 
-
 /**
  * @brief struct with len and char data[64]
  */
@@ -51,7 +50,6 @@ typedef struct fxstr64 {
     size_t len;
     char data[64];
 } fxstr64_t;
-
 
 /**
  * @brief struct with len and char data[256]
