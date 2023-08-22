@@ -19,6 +19,13 @@
 
 #endif   // FX_NO_SHORT_NAMES
 
+
+// ------------------------------------------------------------------------------------------
+//  IMPLEMENTATION
+// ------------------------------------------------------------------------------------------
+#ifdef FX_IMPLEMENTATION
+
+
 #define FX_DEFINE_TRIVIAL_CLEANUP_FUNC(type, func) \
     static inline void func##p(type* p) {          \
         if (*p) func(*p);                          \
@@ -85,4 +92,5 @@ static inline const char* fx_one_zero(bool b) {
     return b ? "1" : "0";
 }
 
+#endif   // FX_IMPLEMENTATION
 #endif   // FX_FXSTR_H_

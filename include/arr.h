@@ -2,9 +2,7 @@
 #ifndef FX_FXARR_H_
 #define FX_FXARR_H_
 
-#include <assert.h>
 #include <stdlib.h>
-#include <string.h>
 
 #ifndef fxarr_clib_free
 #define fxarr_clib_free free
@@ -150,6 +148,14 @@ typedef struct fxarr_meta_t {
 #define arr_copy fxarr_copy
 
 #endif   // FX_NO_SHORT_NAMES
+
+// ------------------------------------------------------------------------------------------
+//  IMPLEMENTATION
+// ------------------------------------------------------------------------------------------
+#ifdef FX_IMPLEMENTATION
+
+#include <assert.h>
+#include <string.h>
 
 /**
  * @brief Declare the array type to be used.
@@ -415,4 +421,5 @@ typedef struct fxarr_meta_t {
         _fxarr_set_capacity((arr), (capacity));                                       \
     } while (0)
 
-#endif /* FX_FXARR_H_ */
+#endif   // FX_IMPLEMENTATION
+#endif   /* FX_FXARR_H_ */
