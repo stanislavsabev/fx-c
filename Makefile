@@ -20,7 +20,7 @@ LIBRARY = libfxc.a
 SHARED_LIBRARY = libfxc.so
 
 
-all: static
+all: static ## Default fule
 
 
 rb: rebuild ##
@@ -47,6 +47,9 @@ clean: ## Clean up
 
 makedirs: ## Create buld directories
 	@mkdir -p $(INC_DIR) $(OBJ_DIR) $(LIB_DIR)
+
+format: ## Format with clang-format
+	@clang-format -i $(SRCS)
 
 h: help ##
 help: ## Show this message
