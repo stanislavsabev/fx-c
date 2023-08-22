@@ -53,13 +53,16 @@ clean: ## Clean up
 makedirs: ## Create buld directories
 	@mkdir -p $(INC_DIR) $(OBJ_DIR) $(LIB_DIR)
 
+
 format: ## Format with clang-format
 	@clang-format -i $(SRCS) $(SRC_HEADERS) $(INC_HEADERS)
+
 
 h: help ##
 help: ## Show this message
 	@awk 'BEGIN {FS = ":.*##"; printf "Usage:\n  make  \033[36m<target>\033[0m\n\nTargets:\n"} \
     /^[a-zA-Z_-]+:.*?##/ { if(length($$2) == 0 ) { printf "\033[36m%7s\033[0m", $$1 } \
 							  else { printf "\t\033[36m%-10s\033[0m %s\n", $$1, $$2 }}' $(MAKEFILE_LIST)
+		
 
 .PHONY: static shared c clean rb rebuild makedirs

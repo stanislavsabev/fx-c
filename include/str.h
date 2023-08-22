@@ -4,18 +4,38 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
-///
-#define fxstr_rept_lit0(s)
-#define fxstr_rept_lit1(s) s
-#define fxstr_rept_lit2(s) fxstr_rept_lit1(s) s
-#define fxstr_rept_lit3(s) fxstr_rept_lit2(s) s
-#define fxstr_rept_lit4(s) fxstr_rept_lit3(s) s
-#define fxstr_rept_lit5(s) fxstr_rept_lit4(s) s
-#define fxstr_rept_lit6(s) fxstr_rept_lit5(s) s
-#define fxstr_rept_lit7(s) fxstr_rept_lit6(s) s
-#define fxstr_rept_lit8(s) fxstr_rept_lit7(s) s
-#define fxstr_rept_lit9(s) fxstr_rept_lit8(s) s
-#define fxstr_rept_lit10(s) fxstr_rept_lit9(s) s
+#ifndef FX_NO_SHORT_NAMES
+
+#define DEFINE_TRIVIAL_CLEANUP_FUNC FX_DEFINE_TRIVIAL_CLEANUP_FUNC
+#define rept_literal                fx_rept_literal
+#define yes_no                      fx_yes_no
+#define true_false                  fx_true_false
+#define one_zero                    fx_one_zero
+#define str                         fxstr_t
+#define str64                       fxstr64_t
+#define str256                      fxstr256_t
+
+#else
+
+#endif   // FX_NO_SHORT_NAMES
+
+#define FX_DEFINE_TRIVIAL_CLEANUP_FUNC(type, func) \
+    static inline void func##p(type* p) {          \
+        if (*p) func(*p);                          \
+    }                                              \
+    struct __useless_struct_to_allow_trailing_semicolon__
+
+#define fx_rept_literal0(s)
+#define fx_rept_literal1(s)  s
+#define fx_rept_literal2(s)  fx_rept_literal1(s) s
+#define fx_rept_literal3(s)  fx_rept_literal2(s) s
+#define fx_rept_literal4(s)  fx_rept_literal3(s) s
+#define fx_rept_literal5(s)  fx_rept_literal4(s) s
+#define fx_rept_literal6(s)  fx_rept_literal5(s) s
+#define fx_rept_literal7(s)  fx_rept_literal6(s) s
+#define fx_rept_literal8(s)  fx_rept_literal7(s) s
+#define fx_rept_literal9(s)  fx_rept_literal8(s) s
+#define fx_rept_literal10(s) fx_rept_literal9(s) s
 
 /**
  * @brief Repeat string literal
@@ -25,28 +45,22 @@
  * @param s string to repeat
  * @returns repeated string literal
  */
-#define fxstr_rept_lit(hundreds, tens, ones, s)                     \
-    fxstr_rept_lit##hundreds(fxstr_rept_lit10(fxstr_rept_lit10(s))) \
-        fxstr_rept_lit##tens(fxstr_rept_lit10(s)) fxstr_rept_lit##ones(s)
-
-#define DEFINE_TRIVIAL_CLEANUP_FUNC(type, func) \
-    static inline void func##p(type* p) {       \
-        if (*p) func(*p);                       \
-    }                                           \
-    struct __useless_struct_to_allow_trailing_semicolon__
+#define fx_rept_literal(hundreds, tens, ones, s)                       \
+    fx_rept_literal##hundreds(fx_rept_literal10(fx_rept_literal10(s))) \
+        fx_rept_literal##tens(fx_rept_literal10(s)) fx_rept_literal##ones(s)
 
 /**
  * @brief struct with len and char data[]
  */
-typedef struct {
+typedef struct fxstr_s {
     size_t len;
     char data[];
-} fxstr;
+} fxstr_t;
 
 /**
  * @brief struct with len and char data[64]
  */
-typedef struct fxstr64 {
+typedef struct fxstr64_s {
     size_t len;
     char data[64];
 } fxstr64_t;
@@ -54,7 +68,7 @@ typedef struct fxstr64 {
 /**
  * @brief struct with len and char data[256]
  */
-typedef struct fxstr256 {
+typedef struct fxstr256_s {
     size_t len;
     char data[256];
 } fxstr256_t;
