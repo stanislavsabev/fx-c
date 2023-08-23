@@ -4,6 +4,35 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
+/**
+ * @brief struct with len and char data[]
+ */
+typedef struct fxstr_s {
+    size_t len;
+    char data[];
+} fxstr_t;
+
+/**
+ * @brief struct with len and char data[64]
+ */
+typedef struct fxstr64_s {
+    size_t len;
+    char data[64];
+} fxstr64_t;
+
+/**
+ * @brief struct with len and char data[256]
+ */
+typedef struct fxstr256_s {
+    size_t len;
+    char data[256];
+} fxstr256_t;
+
+// ------------------------------------------------------------------------------------------
+//  IMPLEMENTATION
+// ------------------------------------------------------------------------------------------
+#ifdef FX_IMPLEMENTATION
+
 #ifndef FX_NO_SHORT_NAMES
 
 #define DEFINE_TRIVIAL_CLEANUP_FUNC FX_DEFINE_TRIVIAL_CLEANUP_FUNC
@@ -19,11 +48,6 @@
 
 #endif   // FX_NO_SHORT_NAMES
 
-
-// ------------------------------------------------------------------------------------------
-//  IMPLEMENTATION
-// ------------------------------------------------------------------------------------------
-#ifdef FX_IMPLEMENTATION
 
 
 #define FX_DEFINE_TRIVIAL_CLEANUP_FUNC(type, func) \
@@ -55,30 +79,6 @@
 #define fx_rept_literal(hundreds, tens, ones, s)                       \
     fx_rept_literal##hundreds(fx_rept_literal10(fx_rept_literal10(s))) \
         fx_rept_literal##tens(fx_rept_literal10(s)) fx_rept_literal##ones(s)
-
-/**
- * @brief struct with len and char data[]
- */
-typedef struct fxstr_s {
-    size_t len;
-    char data[];
-} fxstr_t;
-
-/**
- * @brief struct with len and char data[64]
- */
-typedef struct fxstr64_s {
-    size_t len;
-    char data[64];
-} fxstr64_t;
-
-/**
- * @brief struct with len and char data[256]
- */
-typedef struct fxstr256_s {
-    size_t len;
-    char data[256];
-} fxstr256_t;
 
 static inline const char* fx_yes_no(bool b) {
     return b ? "yes" : "no";
