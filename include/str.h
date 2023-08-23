@@ -15,18 +15,18 @@ typedef struct fxstr_s {
 /**
  * @brief struct with len and char data[64]
  */
-typedef struct fxstr64_s {
+typedef struct fxstr_buf64_s {
     size_t len;
     char data[64];
-} fxstr64_t;
+} fxstr_buf64_t;
 
 /**
  * @brief struct with len and char data[256]
  */
-typedef struct fxstr256_s {
+typedef struct fxstr_buf256_s {
     size_t len;
     char data[256];
-} fxstr256_t;
+} fxstr_buf256_t;
 
 // ------------------------------------------------------------------------------------------
 //  IMPLEMENTATION
@@ -41,14 +41,12 @@ typedef struct fxstr256_s {
 #define true_false                  fx_true_false
 #define one_zero                    fx_one_zero
 #define str                         fxstr_t
-#define str64                       fxstr64_t
-#define str256                      fxstr256_t
+#define str_buf64                   fxstr_buf64_t
+#define str_buf256                  fxstr_buf256_t
 
 #else
 
 #endif   // FX_NO_SHORT_NAMES
-
-
 
 #define FX_DEFINE_TRIVIAL_CLEANUP_FUNC(type, func) \
     static inline void func##p(type* p) {          \
