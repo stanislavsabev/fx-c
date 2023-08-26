@@ -1,5 +1,6 @@
 # Makefile for C library
 
+
 # Compiler and flags
 CC = gcc
 CFLAGS = -Wall -Wextra -fPIC -g
@@ -10,12 +11,15 @@ SRC_DIR = ./src
 INC_DIR = ./include
 OBJ_DIR = ./obj
 LIB_DIR = ./lib
+TEST_DIR = ./tests
 
 # Source files and object files
-SRCS := $(foreach x, $(SRC_DIR), $(wildcard $(addprefix $(x)/*,.c*)))
-OBJS := $(addprefix $(OBJ_DIR)/, $(addsuffix .o, $(notdir $(basename $(SRCS)))))
+SRCS = $(wildcard $(SRC_DIR)/*.c)
+OBJS = $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRCS))
 SRC_HEADERS=$(wildcard $(SRC_DIR)/*.h)
 INC_HEADERS=$(wildcard $(INC_DIR)/*.h)
+TESTS=$(wildcard $(TEST_DIR)/*.c)
+TEST_BINS = $(patsubst $(TEST_DIR)/%.c, $(TEST_DIR)/bin/%, $(TESTS))
 
 # Library name
 LIBRARY = libfxc.a
@@ -45,17 +49,28 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	$(CC) $(CFLAGS) $(LFLAGS) -c $< -o $@
 
 
+$(TEST_DIR)/bin/%: $(TEST_DIR)/%.c
+	$(CC) $(CFLAGS) $(LFLAGS) $< $(OBJS) -o $@ -lcriterion
+
+
+test: static $(TEST_BINS)
+	for test in $(TEST_BINS) ; do ./$$test ; done
+
+
 c: clean ##
 clean: ## Clean up
 	rm -rf $(OBJ_DIR) $(LIB_DIR)/*
 
 
 makedirs: ## Create buld directories
-	@mkdir -p $(INC_DIR) $(OBJ_DIR) $(LIB_DIR)
+	@mkdir -p $(INC_DIR) $(OBJ_DIR) $(LIB_DIR) $(TESTS_DIR) $(TESTS_DIR)/bin
 
 
 format: ## Format with clang-format
 	@clang-format -i $(SRCS) $(SRC_HEADERS) $(INC_HEADERS)
+
+
+
 
 
 h: help ##
@@ -65,4 +80,4 @@ help: ## Show this message
 							  else { printf "\t\033[36m%-10s\033[0m %s\n", $$1, $$2 }}' $(MAKEFILE_LIST)
 		
 
-.PHONY: static shared c clean rb rebuild makedirs
+.PHONY: static shared c clean rb rebuild makedirs test
