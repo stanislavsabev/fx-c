@@ -4,6 +4,21 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
+// Memory functions
+#ifndef fxstr_free
+#define fxstr_free free
+#endif
+#ifndef fxstr_malloc
+#define fxstr_malloc malloc
+#endif
+#ifndef fxstr_calloc
+#define fxstr_calloc calloc
+#endif
+#ifndef fxstr_realloc
+#define fxstr_realloc realloc
+#endif
+
+
 /**
  * @brief struct with len and char data[]
  */
