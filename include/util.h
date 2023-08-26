@@ -2,6 +2,8 @@
 #ifndef FX_FXUTIL_H_
 #define FX_FXUTIL_H_
 
+#include <stdbool.h>
+
 #ifndef FX_NO_SHORT_NAMES
 
 #define DEFINE_TRIVIAL_CLEANUP_FUNC           FX_DEFINE_TRIVIAL_CLEANUP_FUNC
