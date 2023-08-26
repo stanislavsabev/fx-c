@@ -1,8 +1,8 @@
 #ifndef FX_FXSTR_H_
 #define FX_FXSTR_H_
 
-#include <stdlib.h>
 #include <stdbool.h>
+#include <stdlib.h>
 
 // Memory functions
 #ifndef fxstr_stdlib_free
@@ -22,7 +22,6 @@
  * @brief struct with len and char data[]
  */
 typedef struct fxstr_s {
-    size_t capacity;
     size_t len;
     char* data;
 } fxstr_t;
@@ -54,42 +53,21 @@ typedef struct fxstr_buf256_s {
 #endif   // FX_NO_SHORT_NAMES
 
 #define _FXSTR_GROW_MULTIPLIER  2
-#define _FXSTR_INITIAL_CAPACITY 1
 
 static inline fxstr_t fxstr_null(void) {
-    return (fxstr_t){.capacity = 0, .len = 0, .data = NULL};
+    return (fxstr_t){.len = 0, .data = NULL};
 }
 
-static inline bool fxstr_is_empty(const fxstr_t fxstr_) {
-    return fxstr_len(fxstr_) == 0;
+static inline size_t fxstr_len(const fxstr_t* fxstr_ptr_) {
+    return fxstr_ptr_->len;
 }
 
-static inline size_t fxstr_len(const fxstr_t fxstr_) {
-    return fxstr_.len;
+static inline bool fxstr_is_empty(const fxstr_t* fxstr_ptr_) {
+    return fxstr_len(fxstr_ptr_) == 0;
 }
 
-fxstr_t fxstr_from_cstr(const char* cstr[static 1]);
+fxstr_t fxstr_from_cstr(const char cstr[static 1]);
 char* fxstr_to_cstr(const fxstr_t* fxstr_);
+void fxstr_free(fxstr_t* fxstr_);
 
 #endif   // FX_FXSTR_H_
-
-// ------------------------------------------------------------------------------------------
-//  IMPLEMENTATION
-// ------------------------------------------------------------------------------------------
-#ifdef FXSTR_IMPLEMENTATION
-
-fxstr_t fxstr_from_cstr(const char* cstr[static 1]) {
-    size_t ln__ = strlen(cstr) - 1;   // drop the '\0'
-    return fxstr_from_chars(ln__, cstr);
-}
-
-char* fxstr_to_cstr(const fxstr_t* fxstr_) {
-    if (!fxstr_->capacity > fxstr_->len) {
-        _fxstr_grow(&fxstr_, fxstr_->len + 1);   // one more the '\0'
-    }
-    fxstr_->data[fxstr_->len] = '\0';
-    return fxstr_->data;
-}
-
-
-#endif   // FXSTR_IMPLEMENTATION
