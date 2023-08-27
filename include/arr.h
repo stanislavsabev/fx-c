@@ -155,7 +155,7 @@ typedef struct fxarr_meta_t {
  * @brief Declare the array type to be used.
  * @example fxarr_type(Point) points = NULL;
  */
-#define fxarr_type(type) type *
+#define fxarr_type(type) type*
 
 /**
  * @brief Define array of type <type> and name <name>.
@@ -165,21 +165,21 @@ typedef struct fxarr_meta_t {
  * @example `fxarr_init(int, arr);`
  * @return void
  */
-#define fxarr_init(type, name) type *name = NULL
+#define fxarr_init(type, name) type* name = NULL
 
 /**
  * @brief For internal use, converts an array pointer to fxarr_meta_t pointer.
  * @param arr the array
  * @return fxarr_meta_t * - pointer to the array meta data
  */
-#define _fxarr_arr_to_meta(arr) (&((fxarr_meta_t *)(arr))[-1])
+#define _fxarr_arr_to_meta(arr) (&((fxarr_meta_t*)(arr))[-1])
 
 /**
  * @brief For internal use, converts fxarr_meta_t pointer to array pointer.
  * @param ptr pointer to the fxarr_meta_t struct
  * @return pointer to the array
  */
-#define _fxarr_meta_to_arr(ptr) ((void *)&((fxarr_meta_t *)(ptr))[1])
+#define _fxarr_meta_to_arr(ptr) ((void*)&((fxarr_meta_t*)(ptr))[1])
 
 /**
  * @brief Gets current capacity of the array.
@@ -239,7 +239,7 @@ typedef struct fxarr_meta_t {
 #define fxarr_free(arr)                           \
     do {                                          \
         if (arr) {                                \
-            void *p1__ = _fxarr_arr_to_meta(arr); \
+            void* p1__ = _fxarr_arr_to_meta(arr); \
             fxarr_stdlib_free(p1__);              \
         }                                         \
     } while (0)
@@ -402,12 +402,12 @@ typedef struct fxarr_meta_t {
     do {                                                                              \
         const size_t fxarr_ln__ = (capacity) * sizeof(*(arr)) + sizeof(fxarr_meta_t); \
         if ((arr)) {                                                                  \
-            void *fxarr_p1__ = _fxarr_arr_to_meta(arr);                               \
-            void *fxarr_p2__ = fxarr_stdlib_realloc(fxarr_p1__, fxarr_ln__);          \
+            void* fxarr_p1__ = _fxarr_arr_to_meta(arr);                               \
+            void* fxarr_p2__ = fxarr_stdlib_realloc(fxarr_p1__, fxarr_ln__);          \
             assert(fxarr_p2__);                                                       \
             (arr) = _fxarr_meta_to_arr(fxarr_p2__);                                   \
         } else {                                                                      \
-            void *fxarr_p__ = fxarr_stdlib_malloc(fxarr_ln__);                        \
+            void* fxarr_p__ = fxarr_stdlib_malloc(fxarr_ln__);                        \
             assert(fxarr_p__);                                                        \
             (arr) = _fxarr_meta_to_arr(fxarr_p__);                                    \
             _fxarr_set_len((arr), 0);                                                 \
