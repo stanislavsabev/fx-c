@@ -78,11 +78,11 @@ static inline size_t fxstr_buf_len(const str_buf_t* str_ptr_) {
     return str_ptr_->len;
 }
 
-#define fxstr_len(str_ptr_)                                                                   \
+#define fxstr_len(str_ptr_) \
     _Generic((str_ptr_), const str_view_t*: fxstr_view_len, const str_buf_t*: fxstr_buf_len)( \
         str_ptr_)
 
-#define fxstr_is_empty(str_ptr_)                \
+#define fxstr_is_empty(str_ptr_) \
     _Generic((str_ptr_),                        \
         const str_view_t*: fxstr_view_is_empty, \
         const str_buf_t*: fxstr_buf_is_empty)(str_ptr_)

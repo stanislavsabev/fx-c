@@ -2,8 +2,8 @@
 #ifndef FX_FXARR_H_
 #define FX_FXARR_H_
 
-#include <stdlib.h>
 #include <assert.h>
+#include <stdlib.h>
 #include <string.h>
 
 #ifndef fxarr_stdlib_free
@@ -240,7 +240,7 @@ typedef struct fxarr_meta_t {
     do {                                          \
         if (arr) {                                \
             void *p1__ = _fxarr_arr_to_meta(arr); \
-            fxarr_stdlib_free(p1__);                \
+            fxarr_stdlib_free(p1__);              \
         }                                         \
     } while (0)
 
@@ -403,11 +403,11 @@ typedef struct fxarr_meta_t {
         const size_t fxarr_ln__ = (capacity) * sizeof(*(arr)) + sizeof(fxarr_meta_t); \
         if ((arr)) {                                                                  \
             void *fxarr_p1__ = _fxarr_arr_to_meta(arr);                               \
-            void *fxarr_p2__ = fxarr_stdlib_realloc(fxarr_p1__, fxarr_ln__);            \
+            void *fxarr_p2__ = fxarr_stdlib_realloc(fxarr_p1__, fxarr_ln__);          \
             assert(fxarr_p2__);                                                       \
             (arr) = _fxarr_meta_to_arr(fxarr_p2__);                                   \
         } else {                                                                      \
-            void *fxarr_p__ = fxarr_stdlib_malloc(fxarr_ln__);                          \
+            void *fxarr_p__ = fxarr_stdlib_malloc(fxarr_ln__);                        \
             assert(fxarr_p__);                                                        \
             (arr) = _fxarr_meta_to_arr(fxarr_p__);                                    \
             _fxarr_set_len((arr), 0);                                                 \
@@ -415,4 +415,4 @@ typedef struct fxarr_meta_t {
         _fxarr_set_capacity((arr), (capacity));                                       \
     } while (0)
 
-#endif   /* FX_FXARR_H_ */
+#endif /* FX_FXARR_H_ */

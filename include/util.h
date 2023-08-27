@@ -2,8 +2,8 @@
 #ifndef FX_FXUTIL_H_
 #define FX_FXUTIL_H_
 
-#include <string.h>
 #include <stdbool.h>
+#include <string.h>
 
 #ifndef FX_NO_SHORT_NAMES
 
