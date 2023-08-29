@@ -26,7 +26,11 @@ LIBRARY = libfxc.a
 SHARED_LIBRARY = libfxc.so
 
 
-all: static ##* Default rule
+all: build ##* Default rule
+
+
+b: build ##
+build: static ## Build
 
 
 rb: rebuild ##
