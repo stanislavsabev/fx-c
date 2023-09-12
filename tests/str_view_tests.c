@@ -8,49 +8,57 @@
 #undef FX_NO_SHORT_NAMES
 #endif
 
-Test(fxstrtests, fxstr_view_null_create) {
+Test(str_view_tests, fxstr_view_null_create) {
     str_view_t nulstr = fxstr_view_null();
 
     cr_expect(nulstr.data == NULL, "Expected fxstr.data == NULL");
     cr_expect(nulstr.len == 0, "Expected fxstr.len == 0");
 }
 
-Test(fxstrtests, fxstr_view_from_chars_create) {
+Test(str_view_tests, fxstr_view_from_chars_create) {
     char* chars = "abc";
     size_t ln = strlen(chars);
     str_view_t s = fxstr_view_from_chars(ln, chars);
 
     cr_expect(s.len = ln, "Expected string s.len = ln");
-    cr_expect((strncmp(chars, s.data, ln) == 0), "Expected strncmp(chars, s.data) == 0");
+    cr_expect((strncmp(chars, s.data, ln) == 0), "Expected strncmp(chars, s.data, ln) == 0");
 
 }
 
-Test(fxstrtests, fxstr_view_from_chars_create_partial) {
+Test(str_view_tests, fxstr_view_from_chars_create_partial) {
     char* chars = "abcdef";
     size_t ln = strlen("abc");
     str_view_t s = fxstr_view_from_chars(ln, chars);
 
     cr_expect(s.len = ln, "Expected string s.len = 3");
-    cr_expect((strncmp("abc", s.data, ln) == 0), "Expected strncmp('abc', s.data) == 0");
+    cr_expect((strncmp("abc", s.data, ln) == 0), "Expected strncmp('abc', s.data, ln) == 0");
 
 }
 
-Test(fxstrtests, fxstr_view_from_cstr_create) {
-    // fxstr_view_from_cstr
+Test(str_view_tests, fxstr_view_from_cstr_create) {
+    char* cstr = "hello";
+    size_t ln = strlen(cstr);
+
+    str_view_t s = fxstr_view_from_cstr(cstr);
+    cr_expect(s.len = ln, "Expected string s.len = 5");
+    cr_expect((strncmp(cstr, s.data, ln) == 0), "Expected strncmp(cstr, s.data, ln) == 0");
 
 }
 
-Test(fxstrtests, fxstr_view_to_cstr) {
-    // fxstr_view_to_cstr
+Test(str_view_tests, fxstr_view_to_cstr_create) {
+    // setup
+    char* cstr = "hello";
+    size_t ln = strlen(cstr);
+    str_view_t src = fxstr_view_from_cstr(cstr);
 
-}
+    // test
+    char* actual = fxstr_view_to_cstr(&src);
 
-Test(fxstrtests, fx_memmem_find_substr) {
-    // fx_memmem
+    // validate
+    cr_expect(strlen(actual) == src.len, "Expected strlen(actual) = src.len");
+    cr_expect((strncmp(src.data, actual, src.len) == 0), "Expected strncmp(src.data, actual.data, src.len) == 0");
+    cr_expect(actual[src.len] == '\0', "Expected actual[src->len] = '\\0'");
 
-}
-
-Test(fxstrtests, fx_memmem_retrun_null_if_not_found) {
-    // fx_memmem
-
+    // cleanup
+    free(actual);
 }

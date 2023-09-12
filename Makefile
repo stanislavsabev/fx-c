@@ -57,8 +57,12 @@ $(TEST_DIR)/bin/%: $(TEST_DIR)/%.c
 	$(CC) $(CFLAGS) $(LFLAGS) $< $(OBJS) -o $@ -lcriterion
 
 
-test: static $(TEST_BINS)
-	for test in $(TEST_BINS) ; do ./$$test ; done
+build-tests: $(TEST_BINS) ## Build tests
+
+
+t: test ##
+test: static $(TEST_BINS) ## Run tests
+	for test in $(TEST_BINS) ; do ./$$test; done
 
 
 c: clean ##
@@ -74,14 +78,11 @@ format: ## Format with clang-format
 	@clang-format -i $(SRCS) $(SRC_HEADERS) $(INC_HEADERS)
 
 
-
-
-
 h: help ##
 help: ## Show this message
 	@awk 'BEGIN {FS = ":.*##"; printf "Usage:\n  make  \033[36m<target>\033[0m\n\nTargets:\n"} \
     /^[a-zA-Z_-]+:.*?##/ { if(length($$2) == 0 ) { printf "\033[36m%7s\033[0m", $$1 } \
 							  else { printf "\t\033[36m%-10s\033[0m %s\n", $$1, $$2 }}' $(MAKEFILE_LIST)
-		
 
-.PHONY: static shared c clean rb rebuild makedirs test
+
+.PHONY: static shared headers c clean b build rb rebuild makedirs t test
