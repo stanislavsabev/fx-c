@@ -2,6 +2,7 @@
 #ifndef FX_FXUTIL_H_
 #define FX_FXUTIL_H_
 
+#include <stdlib.h>
 #include <stdbool.h>
 
 #ifndef FX_NO_SHORT_NAMES
@@ -66,11 +67,11 @@
         fprintf(__stream, __format, __VA_ARGS__); \
     } while (false)
 #else
-#define dprintf(...) \
+#define dprintf(__format, ...) \
     do {             \
     } while (false)
 
-#define dfprintf(...) \
+#define dfprintf(__stream, __format, ...) \
     do {              \
     } while (false)
 #endif
