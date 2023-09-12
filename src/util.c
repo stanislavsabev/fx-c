@@ -3,8 +3,8 @@
 #include <string.h>
 
 /**
- * @brief Finds the start of the first occurrence of the substring 'needle' in 'hay'.
- * @param hay haystack to search
+ * @brief Finds the start of the first occurrence of the substring 'needle' in string 'hay'.
+ * @param hay string to search
  * @param hlen haystack len
  * @param needle substr to find
  * @param nlen needle len

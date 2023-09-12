@@ -67,7 +67,6 @@ typedef struct str_buf256_s {
 #define strb_from_chars(len, chars_)    fxstr_buf_from_chars(len, chars_)
 #define strb_from_cstr(cstr)            fxstr_buf_from_cstr(cstr)
 #define strb_to_cstr(str_p)             fxstr_buf_to_cstr(str_p)
-#define memmem(hay, hlen, needle, nlen) fx_memmem(hay, hlen, needle, nlen)
 
 #endif   // FX_NO_SHORT_NAMES
 
