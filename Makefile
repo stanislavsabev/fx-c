@@ -62,7 +62,7 @@ build-tests: $(TEST_BINS) ## Build tests
 
 t: test ##
 test: static $(TEST_BINS) ## Run tests
-	for test in $(TEST_BINS) ; do ./$$test; done
+	for test in $(TEST_BINS) ; do ./$$test --verbose 1; done
 
 
 c: clean ##
@@ -85,4 +85,4 @@ help: ## Show this message
 							  else { printf "\t\033[36m%-10s\033[0m %s\n", $$1, $$2 }}' $(MAKEFILE_LIST)
 
 
-.PHONY: static shared headers c clean b build rb rebuild makedirs t test
+.PHONY: b build rb rebuild static shared headers build-tests t test c clean makedirs format h help
