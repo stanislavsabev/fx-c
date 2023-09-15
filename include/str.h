@@ -53,20 +53,20 @@ typedef struct str_buf256_s {
 
 #ifndef FX_NO_SHORT_NAMES
 
-#define strv_null                       fxstr_view_null
-#define str_len(str_p)                  fxstr_len(str_p)
-#define str_is_empty(str_p)             fxstr_is_empty(str_p)
-#define strv_len(str_p)                 fxstr_view_len(str_p)
-#define strv_is_empty(str_p)            fxstr_view_is_empty(str_p)
-#define strv_from_chars(len, chars_)    fxstr_view_from_chars(len, chars_)
-#define strv_from_cstr(cstr)            fxstr_view_from_cstr(cstr)
-#define strv_to_cstr(str_p)             fxstr_view_to_cstr(str_p)
-#define strb_null                       fxstr_buf_null
-#define strb_len(str_p)                 fxstr_buf_len(str_p)
-#define strb_free(str_p)                fxstr_buf_free(str_p)
-#define strb_from_chars(len, chars_)    fxstr_buf_from_chars(len, chars_)
-#define strb_from_cstr(cstr)            fxstr_buf_from_cstr(cstr)
-#define strb_to_cstr(str_p)             fxstr_buf_to_cstr(str_p)
+#define strv_null                    fxstr_view_null
+#define str_len(str_p)               fxstr_len(str_p)
+#define str_is_empty(str_p)          fxstr_is_empty(str_p)
+#define strv_len(str_p)              fxstr_view_len(str_p)
+#define strv_is_empty(str_p)         fxstr_view_is_empty(str_p)
+#define strv_from_chars(len, chars_) fxstr_view_from_chars(len, chars_)
+#define strv_from_cstr(cstr)         fxstr_view_from_cstr(cstr)
+#define strv_to_cstr(str_p)          fxstr_view_to_cstr(str_p)
+#define strb_null                    fxstr_buf_null
+#define strb_len(str_p)              fxstr_buf_len(str_p)
+#define strb_free(str_p)             fxstr_buf_free(str_p)
+#define strb_from_chars(len, chars_) fxstr_buf_from_chars(len, chars_)
+#define strb_from_cstr(cstr)         fxstr_buf_from_cstr(cstr)
+#define strb_to_cstr(str_p)          fxstr_buf_to_cstr(str_p)
 
 #endif   // FX_NO_SHORT_NAMES
 
