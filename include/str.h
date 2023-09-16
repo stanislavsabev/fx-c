@@ -97,18 +97,32 @@ static inline bool fxstr_buf_is_empty(const str_buf_t* str_p) {
     return fxstr_len(str_p) == 0;
 }
 
+#define fxstr_is_null(str_p) \
+    _Generic((str_p),                        \
+        const str_view_t*: fxstr_view_is_null, \
+        const str_buf_t*: fxstr_buf_is_null)(str_p)
+
+static inline bool fxstr_view_is_null(const str_view_t* str_p) {
+    return str_p->len == 0 && str_p->data == NULL;
+}
+
+static inline bool fxstr_buf_is_null(const str_buf_t* str_p) {
+    return str_p->len == 0 && str_p->data == NULL;
+}
+
 // str_view_t
 str_view_t fxstr_view_from_chars(size_t len, const char chars_[static len]);
 str_view_t fxstr_view_from_cstr(const char cstr[static 1]);
 char* fxstr_view_to_cstr(const str_view_t* fxstr_);
 
 // str_buf_t
-str_buf_t fxstr_buf_from_chars(size_t len, const char chars_[static len]);
+str_buf_t fxstr_buf_from_chars(size_t len, const char* chars);
 str_buf_t fxstr_buf_from_cstr(const char cstr[static 1]);
-char* fxstr_buf_to_cstr(str_buf_t* str_p);
+char* fxstr_buf_to_cstr_ref(str_buf_t* str_p);
 char* fxstr_buf_to_cstr_copy(const str_buf_t* str_p);
 str_view_t fxstr_buf_to_str_view(const str_buf_t* str_p);
 void fxstr_buf_free(str_buf_t* str_p);
+void fxstr_buf_reserve(str_buf_t* str_p, size_t capacity);
 
 // utils
 void* fx_memmem(const void* hay, size_t hlen, const void* needle, size_t nlen);

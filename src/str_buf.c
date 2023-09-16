@@ -40,7 +40,7 @@ extern inline str_buf_t fxstr_buf_null(void) {
     return (str_buf_t){.capacity = 0, .len = 0, .data = NULL};
 }
 
-str_buf_t fxstr_buf_from_chars(size_t len, const char chars_[static len]) {
+str_buf_t fxstr_buf_from_chars(size_t len, const char* chars) {
     str_buf_t s__ = fxstr_buf_null();
     if (len == 0) {
         return s__;
@@ -62,6 +62,7 @@ char* fxstr_buf_to_cstr_copy(const str_buf_t* str_p) {
     return cstr;
 }
 
+char* fxstr_buf_to_cstr_ref(str_buf_t* str_p) {
 char* fxstr_buf_to_cstr(str_buf_t* str_p) {
     if (str_p->capacity < str_p->len + 1) {
         _fxstr_grow(str_p, str_p->len + 1);
