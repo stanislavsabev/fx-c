@@ -29,15 +29,15 @@ LIB = $(LIB_DIR)/$(LIB_NAME)
 SHARE_LIB = $(LIB_DIR)/$(SHARED_LIB_NAME)
 
 
-all: build build-tests ##* Default rule
+all: h ##* Default rule
 
 
 b: build ##
-build: static ## Build
+build: static build-tests ## Build the library and tests
 
 
 rb: rebuild ##
-rebuild: clean static ## Rebuild
+rebuild: clean build ## Rebuild
 
 
 static: headers $(OBJS) ## Build static library
@@ -59,11 +59,11 @@ $(TEST_BIN_DIR)/%: $(TEST_DIR)/%.c $(LIB)
 	$(CC) $(CFLAGS) $(LFLAGS) $< $(OBJS) -o $@ -lcriterion
 
 
-build-tests: build $(TEST_BINS) ## Build tests
+build-tests: static $(TEST_BINS) ## Build tests
 
 t: test ##
 test: build-tests ## Run tests
-	for test in $(TEST_BINS) ; do ./$$test; done
+	@for test in $(TEST_BINS) ; do ./$$test $(TEST_FLAGS); done
 
 
 c: clean ##
