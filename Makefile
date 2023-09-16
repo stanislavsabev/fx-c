@@ -12,6 +12,7 @@ INC_DIR = ./include
 OBJ_DIR = ./obj
 LIB_DIR = ./lib
 TEST_DIR = ./tests
+TEST_BIN_DIR = $(TEST_DIR)/bin
 
 # Source files and object files
 SRCS = $(wildcard $(SRC_DIR)/*.c)
@@ -19,14 +20,16 @@ OBJS = $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRCS))
 SRC_HEADERS=$(wildcard $(SRC_DIR)/*.h)
 INC_HEADERS=$(wildcard $(INC_DIR)/*.h)
 TESTS=$(wildcard $(TEST_DIR)/*.c)
-TEST_BINS = $(patsubst $(TEST_DIR)/%.c, $(TEST_DIR)/bin/%, $(TESTS))
+TEST_BINS = $(patsubst $(TEST_DIR)/%.c, $(TEST_BIN_DIR)/%, $(TESTS))
 
 # Library name
-LIBRARY = libfxc.a
-SHARED_LIBRARY = libfxc.so
+LIB_NAME = libfxc.a
+SHARED_LIB_NAME = libfxc.so
+LIB = $(LIB_DIR)/$(LIB_NAME)
+SHARE_LIB = $(LIB_DIR)/$(SHARED_LIB_NAME)
 
 
-all: build ##* Default rule
+all: build build-tests ##* Default rule
 
 
 b: build ##
@@ -37,41 +40,39 @@ rb: rebuild ##
 rebuild: clean static ## Rebuild
 
 
-static: makedirs headers $(OBJS) ## Build static library
-	ar rcs $(LIB_DIR)/$(LIBRARY) $(OBJS)
+static: headers $(OBJS) ## Build static library
+	ar rcs $(LIB) $(OBJS)
 
 
-shared: makedirs headers $(OBJS) ## Build shared library
-	$(CC) -shared -o $(LIB_DIR)/$(SHARED_LIBRARY) $(OBJS)
+shared: headers $(OBJS) ## Build shared library
+	$(CC) -shared -o $(SHARE_LIB) $(OBJS)
 
 
 headers: $(SRC_HEADERS) $(INC_HEADERS)
 
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
-	@mkdir -p $(OBJ_DIR)
 	$(CC) $(CFLAGS) $(LFLAGS) -c $< -o $@
 
 
-$(TEST_DIR)/bin/%: $(TEST_DIR)/%.c
+$(TEST_BIN_DIR)/%: $(TEST_DIR)/%.c $(LIB)
 	$(CC) $(CFLAGS) $(LFLAGS) $< $(OBJS) -o $@ -lcriterion
 
 
-build-tests: $(TEST_BINS) ## Build tests
-
+build-tests: build $(TEST_BINS) ## Build tests
 
 t: test ##
-test: static $(TEST_BINS) ## Run tests
-	for test in $(TEST_BINS) ; do ./$$test --verbose 1; done
+test: build-tests ## Run tests
+	for test in $(TEST_BINS) ; do ./$$test; done
 
 
 c: clean ##
 clean: ## Clean up
-	rm -rf $(OBJ_DIR) $(LIB_DIR)/*
+	rm -rf $(OBJ_DIR)/* $(LIB_DIR)/* $(TEST_BIN_DIR)/*
 
 
 makedirs: ## Create buld directories
-	@mkdir -p $(INC_DIR) $(OBJ_DIR) $(LIB_DIR) $(TESTS_DIR) $(TESTS_DIR)/bin
+	@mkdir -p $(INC_DIR) $(OBJ_DIR) $(LIB_DIR) $(TEST_DIR) $(TEST_BIN_DIR)
 
 
 format: ## Format with clang-format
