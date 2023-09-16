@@ -56,7 +56,7 @@ Test(str_view_tests, fxstr_view_to_cstr_create) {
 
     // validate
     cr_expect(strlen(actual) == src.len, "Expected strlen(actual) = src.len");
-    cr_expect((strncmp(src.data, actual, src.len) == 0), "Expected strncmp(src.data, actual.data, src.len) == 0");
+    cr_expect((strncmp(src.data, actual, ln) == 0), "Expected strncmp(src.data, actual.data, ln) == 0");
     cr_expect(actual[src.len] == '\0', "Expected actual[src->len] = '\\0'");
 
     // cleanup
