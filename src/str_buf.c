@@ -42,11 +42,11 @@ extern inline str_buf_t fxstr_buf_null(void) {
 
 str_buf_t fxstr_buf_from_chars(size_t len, const char* chars) {
     str_buf_t s__ = fxstr_buf_null();
-    if (len == 0) {
+    if (len == 0 || chars == NULL) {
         return s__;
     }
     _fxstr_grow(&s__, len);
-    memcpy(s__.data, chars_, s__.len);
+    memcpy(s__.data, chars, len);
     s__.len = len;
     return s__;
 }
@@ -56,14 +56,19 @@ extern inline str_buf_t fxstr_buf_from_cstr(const char cstr[static 1]) {
 }
 
 char* fxstr_buf_to_cstr_copy(const str_buf_t* str_p) {
+    if (fxstr_buf_is_null(str_p)) {
+        return NULL;
+    }
     char* cstr = fxstr_stdlib_malloc(str_p->len + 1);
-    memcpy(cstr, str_p->data, str_p->len);
+    memcpy(str_p->data, cstr, str_p->len);
     cstr[str_p->len] = '\0';
     return cstr;
 }
 
 char* fxstr_buf_to_cstr_ref(str_buf_t* str_p) {
-char* fxstr_buf_to_cstr(str_buf_t* str_p) {
+    if (fxstr_buf_is_null(str_p)) {
+        return NULL;
+    }
     if (str_p->capacity < str_p->len + 1) {
         _fxstr_grow(str_p, str_p->len + 1);
     }
@@ -83,6 +88,9 @@ str_view_t fxstr_buf_to_str_view(const str_buf_t* str_p) {
 void fxstr_buf_free(str_buf_t* str_p) {
     if (str_p->data) {
         fxstr_stdlib_free(str_p->data);
+        str_p->data = NULL;
+        str_p->len = 0;
+        str_p->capacity = 0;
     }
 }
 
