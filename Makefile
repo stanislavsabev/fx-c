@@ -76,7 +76,7 @@ makedirs: ## Create buld directories
 
 
 format: ## Format with clang-format
-	@clang-format -i $(SRCS) $(SRC_HEADERS) $(INC_HEADERS)
+	@clang-format -i $(SRCS) $(SRC_HEADERS) $(INC_HEADERS) $(TESTS)
 
 
 h: help ##
