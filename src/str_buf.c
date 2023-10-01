@@ -2,6 +2,7 @@
 #include <string.h>
 
 #include "str.h"
+#include "util.h"
 
 #define _FXSTR_GROW_MULTIPLIER  2
 #define _FXSTR_INITIAL_CAPACITY 1
@@ -36,11 +37,15 @@ void _fxstr_grow(str_buf_t* str_p__, size_t capacity_) {
     str_p__->capacity = capacity_;
 }
 
+extern inline str_buf_t fxstr_buf_create(const char* data, size_t len) {
+    return fxstr_buf_from_chars(data, len);
+}
+
 extern inline str_buf_t fxstr_buf_null(void) {
     return (str_buf_t){.capacity = 0, .len = 0, .data = NULL};
 }
 
-str_buf_t fxstr_buf_from_chars(size_t len, const char* chars) {
+extern inline str_buf_t fxstr_buf_from_chars(const char* chars, size_t len) {
     str_buf_t s__ = fxstr_buf_null();
     if (len == 0 || chars == NULL) {
         return s__;
@@ -52,7 +57,7 @@ str_buf_t fxstr_buf_from_chars(size_t len, const char* chars) {
 }
 
 extern inline str_buf_t fxstr_buf_from_cstr(const char cstr[static 1]) {
-    return fxstr_buf_from_chars(strlen(cstr), cstr);
+    return fxstr_buf_from_chars(cstr, strlen(cstr));
 }
 
 char* fxstr_buf_to_cstr_copy(const str_buf_t* str_p) {
@@ -105,4 +110,26 @@ void fxstr_buf_reserve(str_buf_t* str_p, size_t capacity) {
     if (str_p->capacity < capacity) {
         _fxstr_grow(str_p, capacity);
     }
+}
+
+str_buf_t fxstr_buf_split_left_buf(str_buf_t* str_p, const str_buf_t* delim) {
+    const str_view_t delim_view = fxstr_view_from_chars(delim->data, delim->len);
+    return fxstr_buf_split_left_view(str_p, &delim_view);
+}
+str_buf_t fxstr_buf_split_left_view(str_buf_t* str_p, const str_view_t* delim) {
+    char* substr = (char*)fx_memmem(str_p->data, str_p->len, delim->data, delim->len);
+    if (substr == NULL) {
+        return fxstr_buf_null();
+    }
+    size_t left_len = substr - str_p->data;
+    str_buf_t left = fxstr_buf_from_chars(str_p->data, left_len);
+    size_t right_len = str_p->len - left_len - delim->len;
+    str_buf_t right = fxstr_buf_from_chars(substr + delim->len, right_len);
+    fxstr_buf_free(str_p);
+    *str_p = right;
+    return left;
+}
+str_buf_t fxstr_buf_split_left_cstr(str_buf_t* str_p, const char* delim) {
+    str_view_t delim_view = fxstr_view_from_cstr(delim);
+    return fxstr_buf_split_left_view(str_p, &delim_view);
 }
