@@ -21,7 +21,7 @@
 /**
  * @brief struct with len and char data[]
  */
-typedef struct str_veiw_s {
+typedef struct str_view_s {
     size_t len;
     const char* data;
 } str_view_t;
@@ -53,20 +53,25 @@ typedef struct str_buf256_s {
 
 #ifndef FX_NO_SHORT_NAMES
 
-#define strv_null                    fxstr_view_null
-#define str_len(str_p)               fxstr_len(str_p)
-#define str_is_empty(str_p)          fxstr_is_empty(str_p)
-#define strv_len(str_p)              fxstr_view_len(str_p)
-#define strv_is_empty(str_p)         fxstr_view_is_empty(str_p)
-#define strv_from_chars(chars, len)  fxstr_view_from_chars(chars, len)
-#define strv_from_cstr(cstr)         fxstr_view_from_cstr(cstr)
-#define strv_to_cstr(str_p)          fxstr_view_to_cstr(str_p)
-#define strb_null                    fxstr_buf_null
-#define strb_len(str_p)              fxstr_buf_len(str_p)
-#define strb_free(str_p)             fxstr_buf_free(str_p)
-#define strb_from_chars(chars, len)  fxstr_buf_from_chars(chars, len)
-#define strb_from_cstr(cstr)         fxstr_buf_from_cstr(cstr)
-#define strb_to_cstr(str_p)          fxstr_buf_to_cstr(str_p)
+#define str_len(str_p)                fxstr_len(str_p)
+#define str_is_empty(str_p)           fxstr_is_empty(str_p)
+#define str_split_left(str_p, delim)  fxstr_split_left(str_p, delim)
+#define strv_create(data, len)        fxstr_view_create(data, len)
+#define strv_null                     fxstr_view_null
+#define strv_len(str_p)               fxstr_view_len(str_p)
+#define strv_is_empty(str_p)          fxstr_view_is_empty(str_p)
+#define strv_from_chars(chars, len)   fxstr_view_from_chars(chars, len)
+#define strv_from_cstr(cstr)          fxstr_view_from_cstr(cstr)
+#define strv_to_cstr(str_p)           fxstr_view_to_cstr(str_p)
+#define strv_split_left(str_p, delim) fxstr_view_split_left(str_p, delim)
+#define strb_create(data, len)        fxstr_buf_create(data, len)
+#define strb_null                     fxstr_buf_null
+#define strb_len(str_p)               fxstr_buf_len(str_p)
+#define strb_free(str_p)              fxstr_buf_free(str_p)
+#define strb_from_chars(chars, len)   fxstr_buf_from_chars(chars, len)
+#define strb_from_cstr(cstr)          fxstr_buf_from_cstr(cstr)
+#define strb_to_cstr(str_p)           fxstr_buf_to_cstr(str_p)
+#define strb_split_left(str_p, delim) fxstr_buf_split_left(str_p, delim)
 
 #endif   // FX_NO_SHORT_NAMES
 
@@ -90,6 +95,7 @@ char* fxstr_view_to_cstr(const str_view_t* fxstr_);
 str_view_t fxstr_view_split_left_view(str_view_t* str_p, const str_view_t* delim);
 str_view_t fxstr_view_split_left_buf(str_view_t* str_p, const str_buf_t* delim);
 str_view_t fxstr_view_split_left_cstr(str_view_t* str_p, const char* delim);
+str_view_t fxstr_view_split_left_chr(str_view_t* str_p, const char delim);
 
 // str_buf_t
 str_buf_t fxstr_buf_create(const char* data, size_t len);
@@ -115,6 +121,7 @@ void fxstr_buf_reserve(str_buf_t* str_p, size_t capacity);
 str_buf_t fxstr_buf_split_left_buf(str_buf_t* str_p, const str_buf_t* delim);
 str_buf_t fxstr_buf_split_left_view(str_buf_t* str_p, const str_view_t* delim);
 str_buf_t fxstr_buf_split_left_cstr(str_buf_t* str_p, const char* delim);
+str_buf_t fxstr_buf_split_left_chr(str_buf_t* str_p, const char delim);
 
 // generic
 #define fxstr_len(str_p) \
@@ -126,24 +133,30 @@ str_buf_t fxstr_buf_split_left_cstr(str_buf_t* str_p, const char* delim);
 #define fxstr_is_null(str_p) \
     _Generic((str_p), str_view_t * : fxstr_view_is_null, str_buf_t * : fxstr_buf_is_null)(str_p)
 
-// TODO: Implement split by char
+// clang-format off
 #define fxstr_view_split_left_(delim) \
     _Generic((delim),                                 \
             str_view_t* : fxstr_view_split_left_view, \
-            str_buf_t* : fxstr_view_split_left_buf,   \
-            char* : fxstr_view_split_left_cstr)
+            str_buf_t*  : fxstr_view_split_left_buf,  \
+            char*       : fxstr_view_split_left_cstr, \
+            const char* : fxstr_view_split_left_cstr, \
+            char        : fxstr_view_split_left_chr,  \
+            const char  : fxstr_view_split_left_chr   \
+    )
 
-// TODO: Implement split by char
 #define fxstr_buf_split_left_(delim) \
     _Generic((delim),                                \
-            str_buf_t* : fxstr_buf_split_left_buf,   \
+            str_buf_t*  : fxstr_buf_split_left_buf,  \
             str_view_t* : fxstr_buf_split_left_view, \
-            char* : fxstr_buf_split_left_cstr)
+            char*       : fxstr_buf_split_left_cstr, \
+            const char* : fxstr_buf_split_left_cstr, \
+            char        : fxstr_buf_split_left_chr,  \
+            const char  : fxstr_buf_split_left_chr   \
+    )
 
 #define fxstr_buf_split_left(str_p, delim)  fxstr_buf_split_left_(delim)(str_p, delim)
 #define fxstr_view_split_left(str_p, delim) fxstr_view_split_left_(delim)(str_p, delim)
 
-// clang-format off
 #define fxstr_split_left(str_p, delim)                   \
     _Generic((str_p),                                    \
             str_view_t* : fxstr_view_split_left_(delim), \

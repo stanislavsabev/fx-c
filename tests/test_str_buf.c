@@ -21,7 +21,6 @@ Test(str_buf_tests, fxstr_buf_create_nominal) {
     cr_expect(strncmp(actual.data, data, ln) == 0, "Expected strncmp(actual.data, data, ln) == 0");
 }
 
-
 Test(str_buf_tests, fxstr_buf_null_create) {
     // test
     str_buf_t actual = fxstr_buf_null();

@@ -133,3 +133,8 @@ str_buf_t fxstr_buf_split_left_cstr(str_buf_t* str_p, const char* delim) {
     str_view_t delim_view = fxstr_view_from_cstr(delim);
     return fxstr_buf_split_left_view(str_p, &delim_view);
 }
+
+str_buf_t fxstr_buf_split_left_chr(str_buf_t* str_p, const char delim) {
+    const str_view_t delim_view = fxstr_view_from_chars(&delim, 1);
+    return fxstr_buf_split_left_view(str_p, &delim_view);
+}
