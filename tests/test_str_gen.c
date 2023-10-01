@@ -81,7 +81,7 @@ Test(str_gen_tests, fxstr_is_null) {
     fxstr_buf_free(&strb);
 }
 
-Test(str_gen_tests, fxstr_split_left_view_nominal) {
+Test(str_gen_tests, fxstr_lsplit_view_nominal) {
     // setup
     const char* delim = ".";
     char* data = "hello.world";
@@ -95,7 +95,7 @@ Test(str_gen_tests, fxstr_split_left_view_nominal) {
     str_view_t str = fxstr_view_from_chars(data, len);
 
     // test
-    str_view_t actual = fxstr_split_left(&str, delim);
+    str_view_t actual = fxstr_lsplit(&str, delim);
 
     // validate
     cr_expect(actual.len == expect_left_len, "Expected actual.len == expect_left_len");
@@ -110,7 +110,7 @@ Test(str_gen_tests, fxstr_split_left_view_nominal) {
               "Expected actual.len + str.len == len - delim_len");
 }
 
-Test(str_gen_tests, fxstr_split_left_buf_nominal) {
+Test(str_gen_tests, fxstr_lsplit_buf_nominal) {
     // setup
     char* delim = ".";
     char* data = "hello.world";
@@ -124,7 +124,7 @@ Test(str_gen_tests, fxstr_split_left_buf_nominal) {
     str_buf_t str = fxstr_buf_from_chars(data, len);
 
     // test
-    str_buf_t actual = fxstr_split_left(&str, delim);
+    str_buf_t actual = fxstr_lsplit(&str, delim);
 
     // validate
     cr_expect(actual.len == expect_left_len, "Expected actual.len == expect_left_len");
@@ -141,7 +141,7 @@ Test(str_gen_tests, fxstr_split_left_buf_nominal) {
     fxstr_buf_free(&actual);
 }
 
-Test(str_gen_tests, fxstr_split_left_view_non_existing) {
+Test(str_gen_tests, fxstr_lsplit_view_non_existing) {
     // setup
     char* delim = ".";
     char* data = "hello_world";
@@ -150,7 +150,7 @@ Test(str_gen_tests, fxstr_split_left_view_non_existing) {
     str_view_t str = fxstr_view_from_chars(data, len);
 
     // test
-    str_view_t actual = fxstr_split_left(&str, delim);
+    str_view_t actual = fxstr_lsplit(&str, delim);
 
     // validate
     cr_expect(actual.len == 0, "Expected actual.len == 0");
@@ -158,7 +158,7 @@ Test(str_gen_tests, fxstr_split_left_view_non_existing) {
     cr_expect(fxstr_is_null(&actual));
 }
 
-Test(str_gen_tests, fxstr_split_left_buf_non_existing) {
+Test(str_gen_tests, fxstr_lsplit_buf_non_existing) {
     // setup
     const char* delim = ".";
     char* data = "hello_world";
@@ -167,7 +167,7 @@ Test(str_gen_tests, fxstr_split_left_buf_non_existing) {
     str_buf_t str = fxstr_buf_from_chars(data, len);
 
     // test
-    str_buf_t actual = fxstr_split_left(&str, delim);
+    str_buf_t actual = fxstr_lsplit(&str, delim);
 
     // validate
     cr_expect(actual.len == 0, "Expected actual.len == 0");
@@ -192,7 +192,7 @@ Test(str_gen_tests, fxstr_view_split_left_chr_nominal) {
     str_view_t str = fxstr_view_from_chars(data, len);
 
     // test
-    str_view_t actual = fxstr_split_left(&str, delim);
+    str_view_t actual = fxstr_lsplit_chr(&str, delim);
 
     // validate
     cr_expect(actual.len == expect_left_len, "Expected actual.len == expect_left_len");
@@ -219,7 +219,7 @@ Test(str_gen_tests, fxstr_buf_split_left_chr_nominal) {
     str_buf_t str = fxstr_buf_from_chars(data, len);
 
     // test
-    str_buf_t actual = fxstr_split_left(&str, delim);
+    str_buf_t actual = fxstr_lsplit_chr(&str, delim);
 
     // validate
     cr_expect(actual.len == expect_left_len, "Expected actual.len == expect_left_len");
@@ -233,7 +233,7 @@ Test(str_gen_tests, fxstr_buf_split_left_chr_nominal) {
     cr_expect(actual.len + str.len == len - 1, "Expected actual.len + str.len == len - 1");
 }
 
-Test(str_gen_tests, fxstr_split_left_buf_delim_at_the_end) {
+Test(str_gen_tests, fxstr_lsplit_buf_delim_at_the_end) {
     // setup
     const char* delim = "\n";
     char* data = "hello world\n";
@@ -244,7 +244,7 @@ Test(str_gen_tests, fxstr_split_left_buf_delim_at_the_end) {
     str_buf_t str = fxstr_buf_from_chars(data, len);
 
     // test
-    str_buf_t actual = fxstr_split_left(&str, delim);
+    str_buf_t actual = fxstr_lsplit(&str, delim);
 
     // validate
     cr_expect(actual.len == expect_left_len, "Expected actual.len == expect_left_len");
@@ -257,7 +257,7 @@ Test(str_gen_tests, fxstr_split_left_buf_delim_at_the_end) {
     fxstr_buf_free(&actual);
 }
 
-Test(str_gen_tests, fxstr_split_left_view_delim_at_the_end) {
+Test(str_gen_tests, fxstr_lsplit_view_delim_at_the_end) {
     // setup
     const char* delim = "\n";
     char* data = "hello world\n";
@@ -268,7 +268,7 @@ Test(str_gen_tests, fxstr_split_left_view_delim_at_the_end) {
     str_view_t str = fxstr_view_from_chars(data, len);
 
     // test
-    str_view_t actual = fxstr_split_left(&str, delim);
+    str_view_t actual = fxstr_lsplit(&str, delim);
 
     // validate
     cr_expect(actual.len == expect_left_len, "Expected actual.len == expect_left_len");
@@ -288,7 +288,7 @@ Test(str_gen_tests, fxstr_view_split_left_chr_delim_at_the_end) {
     str_view_t str = fxstr_view_from_chars(data, len);
 
     // test
-    str_view_t actual = fxstr_split_left(&str, delim);
+    str_view_t actual = fxstr_lsplit_chr(&str, delim);
 
     // validate
     cr_expect(actual.len == expect_left_len, "Expected actual.len == expect_left_len");
@@ -308,7 +308,7 @@ Test(str_gen_tests, fxstr_buf_split_left_chr_delim_at_the_end) {
     str_buf_t str = fxstr_buf_from_chars(data, len);
 
     // test
-    str_buf_t actual = fxstr_split_left(&str, delim);
+    str_buf_t actual = fxstr_lsplit_chr(&str, delim);
 
     // validate
     cr_expect(actual.len == expect_left_len, "Expected actual.len == expect_left_len");
@@ -319,7 +319,7 @@ Test(str_gen_tests, fxstr_buf_split_left_chr_delim_at_the_end) {
 
 // TODO: Test when delimiter is beginning of input
 
-Test(str_gen_tests, fxstr_split_left_buf_delim_at_beginning) {
+Test(str_gen_tests, fxstr_lsplit_buf_delim_at_beginning) {
     // setup
     const char* delim = "\n";
     char* data = "\nhello world";
@@ -330,7 +330,7 @@ Test(str_gen_tests, fxstr_split_left_buf_delim_at_beginning) {
     str_buf_t str = fxstr_buf_from_chars(data, len);
 
     // test
-    str_buf_t actual = fxstr_split_left(&str, delim);
+    str_buf_t actual = fxstr_lsplit(&str, delim);
 
     // validate
     cr_expect(fxstr_is_null(&actual), "Expected fxstr_is_null(&actual)");
@@ -343,7 +343,7 @@ Test(str_gen_tests, fxstr_split_left_buf_delim_at_beginning) {
     fxstr_buf_free(&actual);
 }
 
-Test(str_gen_tests, fxstr_split_left_view_delim_at_beginning) {
+Test(str_gen_tests, fxstr_lsplit_view_delim_at_beginning) {
     // setup
     const char* delim = "\n";
     char* data = "\nhello world";
@@ -354,7 +354,7 @@ Test(str_gen_tests, fxstr_split_left_view_delim_at_beginning) {
     str_view_t str = fxstr_view_from_chars(data, len);
 
     // test
-    str_view_t actual = fxstr_split_left(&str, delim);
+    str_view_t actual = fxstr_lsplit(&str, delim);
 
     // validate
     cr_expect(fxstr_is_null(&actual), "Expected fxstr_is_null(&actual)");
@@ -374,7 +374,7 @@ Test(str_gen_tests, fxstr_view_split_left_chr_delim_at_beginning) {
     str_view_t str = fxstr_view_from_chars(data, len);
 
     // test
-    str_view_t actual = fxstr_split_left(&str, delim);
+    str_view_t actual = fxstr_lsplit_chr(&str, delim);
 
     // validate
     cr_expect(fxstr_is_null(&actual), "Expected fxstr_is_null(&actual)");
@@ -394,7 +394,7 @@ Test(str_gen_tests, fxstr_buf_split_left_chr_delim_at_beginning) {
     str_buf_t str = fxstr_buf_from_chars(data, len);
 
     // test
-    str_buf_t actual = fxstr_split_left(&str, delim);
+    str_buf_t actual = fxstr_lsplit_chr(&str, delim);
 
     // validate
     cr_expect(fxstr_is_null(&actual), "Expected fxstr_is_null(&actual)");

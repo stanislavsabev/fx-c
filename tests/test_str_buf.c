@@ -55,7 +55,6 @@ Test(str_buf_tests, fxstr_buf_acquire_nominal) {
     fxstr_buf_free(&actual);
 }
 
-
 Test(str_buf_tests, fxstr_buf_from_chars_create) {
     // setup
     const char* chars = "abcde";

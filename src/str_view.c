@@ -27,7 +27,7 @@ char* fxstr_view_to_cstr(const str_view_t* str_p) {
     return cstr;
 }
 
-str_view_t fxstr_view_split_left_view(str_view_t* str_p, const str_view_t* delim) {
+str_view_t fxstr_view_lsplit_view(str_view_t* str_p, const str_view_t* delim) {
     char* substr = (char*)fx_memmem(str_p->data, str_p->len, delim->data, delim->len);
     if (substr == NULL) {
         return fxstr_view_null();
@@ -46,17 +46,17 @@ str_view_t fxstr_view_split_left_view(str_view_t* str_p, const str_view_t* delim
     return left;
 }
 
-str_view_t fxstr_view_split_left_buf(str_view_t* str_p, const str_buf_t* delim) {
+str_view_t fxstr_view_lsplit_buf(str_view_t* str_p, const str_buf_t* delim) {
     const str_view_t delim_view = fxstr_view_from_chars(delim->data, delim->len);
-    return fxstr_view_split_left_view(str_p, &delim_view);
+    return fxstr_view_lsplit_view(str_p, &delim_view);
 }
 
-str_view_t fxstr_view_split_left_cstr(str_view_t* str_p, const char* delim) {
+str_view_t fxstr_view_lsplit_cstr(str_view_t* str_p, const char* delim) {
     const str_view_t delim_view = fxstr_view_from_cstr(delim);
-    return fxstr_view_split_left_view(str_p, &delim_view);
+    return fxstr_view_lsplit_view(str_p, &delim_view);
 }
 
-str_view_t fxstr_view_split_left_chr(str_view_t* str_p, const char delim) {
-    const str_view_t delim_view = fxstr_view_from_chars(&delim, 1);
-    return fxstr_view_split_left_view(str_p, &delim_view);
+str_view_t fxstr_view_lsplit_chr(str_view_t* str_p, const char cch_delim) {
+    const str_view_t delim_view = fxstr_view_from_chars(&cch_delim, 1);
+    return fxstr_view_lsplit_view(str_p, &delim_view);
 }
