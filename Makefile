@@ -75,6 +75,7 @@ makedirs: ## Create buld directories
 	@mkdir -p $(INC_DIR) $(OBJ_DIR) $(LIB_DIR) $(TEST_DIR) $(TEST_BIN_DIR)
 
 
+f: format ##
 format: ## Format with clang-format
 	@clang-format -i $(SRCS) $(SRC_HEADERS) $(INC_HEADERS) $(TESTS)
 
@@ -86,4 +87,4 @@ help: ## Show this message
 							  else { printf "\t\033[36m%-10s\033[0m %s\n", $$1, $$2 }}' $(MAKEFILE_LIST)
 
 
-.PHONY: b build rb rebuild static shared headers build-tests t test c clean makedirs format h help
+.PHONY: b build rb rebuild static shared headers build-tests t test c clean makedirs f format h help
