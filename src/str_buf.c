@@ -37,12 +37,23 @@ void _fxstr_grow(str_buf_t* str_p__, size_t capacity_) {
     str_p__->capacity = capacity_;
 }
 
+extern inline str_buf_t fxstr_buf_null(void) {
+    return (str_buf_t){.capacity = 0, .len = 0, .data = NULL};
+}
+
 extern inline str_buf_t fxstr_buf_create(const char* data, size_t len) {
     return fxstr_buf_from_chars(data, len);
 }
 
-extern inline str_buf_t fxstr_buf_null(void) {
-    return (str_buf_t){.capacity = 0, .len = 0, .data = NULL};
+str_buf_t fxstr_buf_acquire(char** data, size_t len) {
+    str_buf_t s__ = fxstr_buf_null();
+    if (len == 0 || *data == NULL) {
+        return s__;
+    }
+    s__.data = *data;
+    s__.len = len;
+    s__.capacity = len;
+    return s__;
 }
 
 extern inline str_buf_t fxstr_buf_from_chars(const char* chars, size_t len) {

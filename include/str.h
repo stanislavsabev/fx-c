@@ -76,8 +76,9 @@ typedef struct str_buf256_s {
 #endif   // FX_NO_SHORT_NAMES
 
 // str_view_t
-str_view_t fxstr_view_create(const char* data, size_t len);
 str_view_t fxstr_view_null(void);
+str_view_t fxstr_view_create(const char* data, size_t len);
+
 static inline size_t fxstr_view_len(const str_view_t* str_p) {
     return str_p->len;
 }
@@ -98,8 +99,10 @@ str_view_t fxstr_view_split_left_cstr(str_view_t* str_p, const char* delim);
 str_view_t fxstr_view_split_left_chr(str_view_t* str_p, const char delim);
 
 // str_buf_t
-str_buf_t fxstr_buf_create(const char* data, size_t len);
 str_buf_t fxstr_buf_null(void);
+str_buf_t fxstr_buf_create(const char* data, size_t len);
+str_buf_t fxstr_buf_acquire(char** data, size_t len);
+
 static inline size_t fxstr_buf_len(const str_buf_t* str_p) {
     return str_p->len;
 }

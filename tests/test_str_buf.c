@@ -9,6 +9,16 @@
 #undef FX_NO_SHORT_NAMES
 #endif
 
+Test(str_buf_tests, fxstr_buf_null_create) {
+    // test
+    str_buf_t actual = fxstr_buf_null();
+
+    // validate
+    cr_expect(actual.data == NULL, "Expected actual.data == NULL");
+    cr_expect(actual.len == 0, "Expected actual.len == 0");
+    cr_expect(actual.capacity == 0, "Expected actual.capacity == 0");
+}
+
 Test(str_buf_tests, fxstr_buf_create_nominal) {
     // test
     const char* data = "abc";
@@ -21,15 +31,30 @@ Test(str_buf_tests, fxstr_buf_create_nominal) {
     cr_expect(strncmp(actual.data, data, ln) == 0, "Expected strncmp(actual.data, data, ln) == 0");
 }
 
-Test(str_buf_tests, fxstr_buf_null_create) {
+Test(str_buf_tests, fxstr_buf_acquire_nominal) {
     // test
-    str_buf_t actual = fxstr_buf_null();
+    const char* data = "abc";
+    size_t ln = strlen(data);
+
+    char* buff = malloc(ln);
+    memcpy(buff, "abc", ln);
+
+    str_buf_t actual = fxstr_buf_acquire(&buff, ln);
 
     // validate
-    cr_expect(actual.data == NULL, "Expected actual.data == NULL");
-    cr_expect(actual.len == 0, "Expected actual.len == 0");
-    cr_expect(actual.capacity == 0, "Expected actual.capacity == 0");
+    cr_expect(actual.data == buff, "Expected same pointer: actual.data == buff");
+    cr_expect(actual.len == ln, "Expected actual.len == ln");
+    cr_expect(actual.capacity >= ln, "Expected actual.capacity >= ln");
+    cr_expect(strncmp(actual.data, data, ln) == 0, "Expected strncmp(actual.data, data, ln) == 0");
+
+    // change value to check if it's the same pointer
+    memcpy(actual.data, "xyz", actual.len);
+    cr_expect(strncmp(buff, "xyz", ln) == 0, "Expected strncmp(buff, \"xyz\", ln) == 0");
+
+    // cleanup
+    fxstr_buf_free(&actual);
 }
+
 
 Test(str_buf_tests, fxstr_buf_from_chars_create) {
     // setup

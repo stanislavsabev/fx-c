@@ -4,12 +4,12 @@
 #include "str.h"
 #include "util.h"
 
-extern inline str_view_t fxstr_view_create(const char* data, size_t len) {
-    return fxstr_view_from_chars(data, len);
-}
-
 extern inline str_view_t fxstr_view_null(void) {
     return fxstr_view_from_chars(NULL, 0);
+}
+
+extern inline str_view_t fxstr_view_create(const char* data, size_t len) {
+    return fxstr_view_from_chars(data, len);
 }
 
 extern inline str_view_t fxstr_view_from_chars(const char* chars, size_t len) {
