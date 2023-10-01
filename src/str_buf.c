@@ -81,7 +81,7 @@ char* fxstr_buf_to_cstr_copy(const str_buf_t* str_p) {
     return cstr;
 }
 
-char* fxstr_buf_to_cstr_ref(str_buf_t* str_p) {
+const char* fxstr_buf_to_cstr(str_buf_t* str_p) {
     if (fxstr_buf_is_null(str_p)) {
         return NULL;
     }
@@ -89,7 +89,7 @@ char* fxstr_buf_to_cstr_ref(str_buf_t* str_p) {
         _fxstr_grow(str_p, str_p->len + 1);
     }
     str_p->data[str_p->len] = '\0';
-    return str_p->data;
+    return (const char*)str_p->data;
 }
 
 str_view_t fxstr_buf_to_str_view(const str_buf_t* str_p) {

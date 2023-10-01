@@ -105,7 +105,7 @@ Test(str_buf_tests, fxstr_buf_to_cstr_ref_create) {
     const char* cstr = "abcde";
     str_buf_t strb = fxstr_buf_from_cstr(cstr);
     // test
-    char* actual = fxstr_buf_to_cstr_ref(&strb);
+    const char* actual = fxstr_buf_to_cstr(&strb);
 
     // validate
     cr_expect(strncmp(actual, strb.data, strb.len) == 0);
@@ -120,7 +120,7 @@ Test(str_buf_tests, fxstr_buf_to_cstr_ref_from_null_is_null) {
     str_buf_t strb = fxstr_buf_null();
 
     // test
-    char* actual = fxstr_buf_to_cstr_ref(&strb);
+    const char* actual = fxstr_buf_to_cstr(&strb);
 
     // validate
     cr_expect(actual == NULL, "Expect actual == NULL");

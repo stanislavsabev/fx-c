@@ -53,13 +53,11 @@ typedef struct str_buf256_s {
 
 #ifndef FX_NO_SHORT_NAMES
 
-#define str_len(str_p)                fxstr_len(str_p)
-#define str_is_empty(str_p)           fxstr_is_empty(str_p)
-#define str_split_left(str_p, delim)  fxstr_split_left(str_p, delim)
 #define strv_null                     fxstr_view_null
 #define strv_create(data, len)        fxstr_view_create(data, len)
 #define strv_len(str_p)               fxstr_view_len(str_p)
 #define strv_is_empty(str_p)          fxstr_view_is_empty(str_p)
+#define strv_is_null(str_p)           fxstr_view_is_null(str_p)
 #define strv_from_chars(chars, len)   fxstr_view_from_chars(chars, len)
 #define strv_from_cstr(cstr)          fxstr_view_from_cstr(cstr)
 #define strv_to_cstr(str_p)           fxstr_view_to_cstr(str_p)
@@ -68,11 +66,20 @@ typedef struct str_buf256_s {
 #define strb_create(data, len)        fxstr_buf_create(data, len)
 #define strb_acquire(data, len)       fxstr_buf_acquire(data, len)
 #define strb_len(str_p)               fxstr_buf_len(str_p)
-#define strb_free(str_p)              fxstr_buf_free(str_p)
+#define strb_is_empty(str_p)          fxstr_buf_is_empty(str_p)
+#define strb_is_null(str_p)           fxstr_buf_is_null(str_p)
 #define strb_from_chars(chars, len)   fxstr_buf_from_chars(chars, len)
 #define strb_from_cstr(cstr)          fxstr_buf_from_cstr(cstr)
 #define strb_to_cstr(str_p)           fxstr_buf_to_cstr(str_p)
+#define strb_to_cstr_copy(str_p)      fxstr_buf_to_cstr_copy(str_p)
+#define strb_to_str_view(str_p)       fxstr_buf_to_str_view(str_p)
+#define strb_free(str_p)              fxstr_buf_free(str_p)
+#define strb_reserve(str_p, capacity) fxstr_buf_reserve(str_p, capacity)
 #define strb_split_left(str_p, delim) fxstr_buf_split_left(str_p, delim)
+#define str_len(str_p)                fxstr_len(str_p)
+#define str_is_empty(str_p)           fxstr_is_empty(str_p)
+#define str_is_null(str_p)            fxstr_is_null(str_p)
+#define str_split_left(str_p, delim)  fxstr_split_left(str_p, delim)
 
 #endif   // FX_NO_SHORT_NAMES
 
@@ -115,7 +122,7 @@ static inline bool fxstr_buf_is_null(const str_buf_t* str_p) {
 }
 str_buf_t fxstr_buf_from_chars(const char* chars, size_t len);
 str_buf_t fxstr_buf_from_cstr(const char cstr[static 1]);
-char* fxstr_buf_to_cstr_ref(str_buf_t* str_p);
+const char* fxstr_buf_to_cstr(str_buf_t* str_p);
 char* fxstr_buf_to_cstr_copy(const str_buf_t* str_p);
 str_view_t fxstr_buf_to_str_view(const str_buf_t* str_p);
 void fxstr_buf_free(str_buf_t* str_p);
@@ -129,13 +136,13 @@ str_buf_t fxstr_buf_split_left_chr(str_buf_t* str_p, const char delim);
 
 // generic
 #define fxstr_len(str_p) \
-    _Generic((str_p), str_view_t * : fxstr_view_len, str_buf_t * : fxstr_buf_len)(str_p)
+    _Generic((str_p), str_view_t *: fxstr_view_len, str_buf_t *: fxstr_buf_len)(str_p)
 
 #define fxstr_is_empty(str_p) \
-    _Generic((str_p), str_view_t * : fxstr_view_is_empty, str_buf_t * : fxstr_buf_is_empty)(str_p)
+    _Generic((str_p), str_view_t *: fxstr_view_is_empty, str_buf_t *: fxstr_buf_is_empty)(str_p)
 
 #define fxstr_is_null(str_p) \
-    _Generic((str_p), str_view_t * : fxstr_view_is_null, str_buf_t * : fxstr_buf_is_null)(str_p)
+    _Generic((str_p), str_view_t *: fxstr_view_is_null, str_buf_t *: fxstr_buf_is_null)(str_p)
 
 // clang-format off
 #define fxstr_view_split_left_(delim) \
