@@ -130,7 +130,7 @@ Test(str_buf_tests, fxstr_buf_to_str_view_create) {
     str_buf_t strb = fxstr_buf_from_cstr("abc");
 
     // test
-    str_view_t actual = fxstr_buf_to_str_view(&strb);
+    str actual = fxstr_buf_to_str_view(&strb);
 
     // validate
     cr_expect(strncmp(actual.data, strb.data, strb.len) == 0,
@@ -146,7 +146,7 @@ Test(str_buf_tests, fxstr_buf_to_str_view_create_from_null_is_null) {
     str_buf_t strb = fxstr_buf_null();
 
     // test
-    str_view_t actual = fxstr_buf_to_str_view(&strb);
+    str actual = fxstr_buf_to_str_view(&strb);
 
     // validate
     cr_expect(fxstr_view_is_null(&actual), "Expect fxstr_view_is_null(&actual)");
