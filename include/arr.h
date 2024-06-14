@@ -27,7 +27,7 @@ typedef struct fxarr_meta_t {
     size_t capacity;
 } fxarr_meta_t;
 
-#ifndef FX_NO_SHORT_NAMES
+#ifndef STRLIB_NO_SHORT_NAMES
 
 /**
  * @brief Declare the array type to be used.
@@ -149,7 +149,7 @@ typedef struct fxarr_meta_t {
  */
 #define arr_copy(src, dest) fxarr_copy(src, dest)
 
-#endif   // FX_NO_SHORT_NAMES
+#endif   // STRLIB_NO_SHORT_NAMES
 
 /**
  * @brief Declare the array type to be used.

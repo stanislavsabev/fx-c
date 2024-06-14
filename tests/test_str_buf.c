@@ -5,8 +5,8 @@
 #include "strlib.h"
 #include "util.h"
 
-#ifdef FX_NO_SHORT_NAMES
-#undef FX_NO_SHORT_NAMES
+#ifdef STRLIB_NO_SHORT_NAMES
+#undef STRLIB_NO_SHORT_NAMES
 #endif
 
 Test(str_buf_tests, fxstr_buf_null_create) {

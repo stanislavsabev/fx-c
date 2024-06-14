@@ -36,7 +36,7 @@ typedef struct String_s {
 } String;
 
 
-#ifndef FX_NO_SHORT_NAMES
+#ifndef STRLIB_NO_SHORT_NAMES
 
 #define strv_null                        fxstr_view_null
 #define strv_create(data, len)           fxstr_view_create(data, len)
@@ -69,7 +69,7 @@ typedef struct String_s {
 #define str_lsplit(str_p, delim)         fxstr_lsplit(str_p, delim)
 #define str_lsplit_chr(str_p, cch_delim) fxstr_lsplit_chr(str_p, cch_delim)
 
-#endif   // FX_NO_SHORT_NAMES
+#endif   // STRLIB_NO_SHORT_NAMES
 
 // str
 str fxstr_view_null(void);
