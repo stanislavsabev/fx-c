@@ -1,8 +1,11 @@
 # **fx-c**
 
-C library with useful common structures and functions
+C library with common functions and data structures 
 
 + `fxarray` - Dynamic array
-+ `fxstring` - String functions and string manipulation
+
+String manipulation
++ `str` - String view
++ `String` - Owned string
 
 ---

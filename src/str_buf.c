@@ -4,8 +4,8 @@
 #include "strlib.h"
 #include "util.h"
 
-#define _FXSTR_GROW_MULTIPLIER  2
-#define _FXSTR_INITIAL_CAPACITY 8
+#define _STRLIB_GROW_MULTIPLIER  2
+#define _STRLIB_INITIAL_CAPACITY 8
 
 /**
  * @brief For internal use. Computes the capacity of the next grow.
@@ -14,7 +14,7 @@
  * @return size_t - capacity after next grow
  */
 static inline size_t _str_compute_next_grow(size_t capacity_) {
-    return capacity_ ? capacity_ * _FXSTR_GROW_MULTIPLIER : _FXSTR_INITIAL_CAPACITY;
+    return capacity_ ? capacity_ * _STRLIB_GROW_MULTIPLIER : _STRLIB_INITIAL_CAPACITY;
 }
 
 /**
