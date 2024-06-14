@@ -1,11 +1,11 @@
 #include <assert.h>
 #include <string.h>
 
-#include "str.h"
+#include "strlib.h"
 #include "util.h"
 
 #define _FXSTR_GROW_MULTIPLIER  2
-#define _FXSTR_INITIAL_CAPACITY 1
+#define _FXSTR_INITIAL_CAPACITY 8
 
 /**
  * @brief For internal use. Computes the capacity of the next grow.
@@ -13,7 +13,7 @@
  * @param capacity_ current capacity
  * @return size_t - capacity after next grow
  */
-static inline size_t _fxstr_compute_next_grow(size_t capacity_) {
+static inline size_t _str_compute_next_grow(size_t capacity_) {
     return capacity_ ? capacity_ * _FXSTR_GROW_MULTIPLIER : _FXSTR_INITIAL_CAPACITY;
 }
 
@@ -22,7 +22,7 @@ static inline size_t _fxstr_compute_next_grow(size_t capacity_) {
  * @param str_p__ pointer to the str
  * @return void
  */
-void _fxstr_grow(str_buf_t* str_p__, size_t capacity_) {
+void _str_grow(str_buf_t* str_p__, size_t capacity_) {
     const size_t ln__ = capacity_ * sizeof(*str_p__->data);
     if (str_p__->data) {
         void* data_p__ = fxstr_stdlib_realloc(str_p__->data, ln__);
@@ -61,7 +61,7 @@ extern inline str_buf_t fxstr_buf_from_chars(const char* chars, size_t len) {
     if (len == 0 || chars == NULL) {
         return s__;
     }
-    _fxstr_grow(&s__, len);
+    _str_grow(&s__, len);
     memcpy(s__.data, chars, len);
     s__.len = len;
     return s__;
@@ -86,7 +86,7 @@ const char* fxstr_buf_to_cstr(str_buf_t* str_p) {
         return NULL;
     }
     if (str_p->capacity < str_p->len + 1) {
-        _fxstr_grow(str_p, str_p->len + 1);
+        _str_grow(str_p, str_p->len + 1);
     }
     str_p->data[str_p->len] = '\0';
     return (const char*)str_p->data;
@@ -119,7 +119,7 @@ void fxstr_buf_free(str_buf_t* str_p) {
  */
 void fxstr_buf_reserve(str_buf_t* str_p, size_t capacity) {
     if (str_p->capacity < capacity) {
-        _fxstr_grow(str_p, capacity);
+        _str_grow(str_p, capacity);
     }
 }
 

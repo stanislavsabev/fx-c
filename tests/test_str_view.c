@@ -1,7 +1,7 @@
 #include <criterion/criterion.h>
 #include <string.h>
 
-#include "str.h"
+#include "strlib.h"
 #include "util.h"
 
 #ifdef FX_NO_SHORT_NAMES

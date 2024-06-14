@@ -1,5 +1,5 @@
-#ifndef FX_FXSTR_H_
-#define FX_FXSTR_H_
+#ifndef _STRLIB_H_
+#define _STRLIB_H_
 
 #include <stdbool.h>
 #include <stdlib.h>
@@ -178,4 +178,4 @@ str_buf_t fxstr_buf_lsplit_chr(str_buf_t* str_p, const char cch_delim);
             str_buf_t * : fxstr_buf_lsplit_chr)(str_p, cch_delim)
 // clang-format on
 
-#endif   // FX_FXSTR_H_
+#endif   // _STRLIB_H_

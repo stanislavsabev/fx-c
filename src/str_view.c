@@ -1,7 +1,7 @@
 #include <assert.h>
 #include <string.h>
 
-#include "str.h"
+#include "strlib.h"
 #include "util.h"
 
 extern inline str_view_t fxstr_view_null(void) {
