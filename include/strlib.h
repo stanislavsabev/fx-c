@@ -33,7 +33,7 @@ typedef struct String_s {
     size_t capacity;
     size_t len;
     char* data;
-} str_buf_t;
+} String;
 
 
 #ifndef FX_NO_SHORT_NAMES
@@ -90,60 +90,60 @@ char* fxstr_view_to_cstr(const str* fxstr_);
 
 // view split left
 str fxstr_view_lsplit_view(str* str_p, const str* delim);
-str fxstr_view_lsplit_buf(str* str_p, const str_buf_t* delim);
+str fxstr_view_lsplit_buf(str* str_p, const String* delim);
 str fxstr_view_lsplit_cstr(str* str_p, const char* delim);
 str fxstr_view_lsplit_chr(str* str_p, const char cch_delim);
 
-// str_buf_t
-str_buf_t fxstr_buf_null(void);
-str_buf_t fxstr_buf_create(const char* cch_p, size_t len);
-str_buf_t fxstr_buf_acquire(char** ch_pp, size_t len);
+// String
+String fxstr_buf_null(void);
+String fxstr_buf_create(const char* cch_p, size_t len);
+String fxstr_buf_acquire(char** ch_pp, size_t len);
 
-static inline size_t fxstr_buf_len(const str_buf_t* str_p) {
+static inline size_t fxstr_buf_len(const String* str_p) {
     return str_p->len;
 }
-static inline bool fxstr_buf_is_empty(const str_buf_t* str_p) {
+static inline bool fxstr_buf_is_empty(const String* str_p) {
     return fxstr_buf_len(str_p) == 0;
 }
-static inline bool fxstr_buf_is_null(const str_buf_t* str_p) {
+static inline bool fxstr_buf_is_null(const String* str_p) {
     return str_p->len == 0 && str_p->data == NULL;
 }
-str_buf_t fxstr_buf_from_chars(const char* chars, size_t len);
-str_buf_t fxstr_buf_from_cstr(const char cstr[static 1]);
-const char* fxstr_buf_to_cstr(str_buf_t* str_p);
-char* fxstr_buf_to_cstr_copy(const str_buf_t* str_p);
-str fxstr_buf_to_str_view(const str_buf_t* str_p);
-void fxstr_buf_free(str_buf_t* str_p);
-void fxstr_buf_reserve(str_buf_t* str_p, size_t capacity);
+String fxstr_buf_from_chars(const char* chars, size_t len);
+String fxstr_buf_from_cstr(const char cstr[static 1]);
+const char* fxstr_buf_to_cstr(String* str_p);
+char* fxstr_buf_to_cstr_copy(const String* str_p);
+str fxstr_buf_to_str_view(const String* str_p);
+void fxstr_buf_free(String* str_p);
+void fxstr_buf_reserve(String* str_p, size_t capacity);
 
 // buf split left
-str_buf_t fxstr_buf_lsplit_buf(str_buf_t* str_p, const str_buf_t* delim);
-str_buf_t fxstr_buf_lsplit_view(str_buf_t* str_p, const str* delim);
-str_buf_t fxstr_buf_lsplit_cstr(str_buf_t* str_p, const char* delim);
-str_buf_t fxstr_buf_lsplit_chr(str_buf_t* str_p, const char cch_delim);
+String fxstr_buf_lsplit_buf(String* str_p, const String* delim);
+String fxstr_buf_lsplit_view(String* str_p, const str* delim);
+String fxstr_buf_lsplit_cstr(String* str_p, const char* delim);
+String fxstr_buf_lsplit_chr(String* str_p, const char cch_delim);
 
 // generic
 #define fxstr_len(str_p) \
-    _Generic((str_p), str * : fxstr_view_len, str_buf_t * : fxstr_buf_len)(str_p)
+    _Generic((str_p), str * : fxstr_view_len, String * : fxstr_buf_len)(str_p)
 
 #define fxstr_is_empty(str_p) \
-    _Generic((str_p), str * : fxstr_view_is_empty, str_buf_t * : fxstr_buf_is_empty)(str_p)
+    _Generic((str_p), str * : fxstr_view_is_empty, String * : fxstr_buf_is_empty)(str_p)
 
 #define fxstr_is_null(str_p) \
-    _Generic((str_p), str * : fxstr_view_is_null, str_buf_t * : fxstr_buf_is_null)(str_p)
+    _Generic((str_p), str * : fxstr_view_is_null, String * : fxstr_buf_is_null)(str_p)
 
 // clang-format off
 #define fxstr_view_split_left_(delim)             \
     _Generic((delim),                             \
             str* : fxstr_view_lsplit_view, \
-            str_buf_t*  : fxstr_view_lsplit_buf,  \
+            String*  : fxstr_view_lsplit_buf,  \
             char*       : fxstr_view_lsplit_cstr, \
             const char* : fxstr_view_lsplit_cstr  \
     )
 
 #define fxstr_buf_split_left_(delim)             \
     _Generic((delim),                            \
-            str_buf_t*  : fxstr_buf_lsplit_buf,  \
+            String*  : fxstr_buf_lsplit_buf,  \
             str* : fxstr_buf_lsplit_view, \
             char*       : fxstr_buf_lsplit_cstr, \
             const char* : fxstr_buf_lsplit_cstr  \
@@ -155,12 +155,12 @@ str_buf_t fxstr_buf_lsplit_chr(str_buf_t* str_p, const char cch_delim);
 #define fxstr_lsplit(str_p, delim)                       \
     _Generic((str_p),                                    \
             str* : fxstr_view_split_left_(delim), \
-            str_buf_t * : fxstr_buf_split_left_(delim))(str_p, delim)
+            String * : fxstr_buf_split_left_(delim))(str_p, delim)
 
 #define fxstr_lsplit_chr(str_p, cch_delim)           \
     _Generic((str_p),                            \
             str* : fxstr_view_lsplit_chr, \
-            str_buf_t * : fxstr_buf_lsplit_chr)(str_p, cch_delim)
+            String * : fxstr_buf_lsplit_chr)(str_p, cch_delim)
 // clang-format on
 
 #endif   // _STRLIB_H_

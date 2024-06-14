@@ -46,7 +46,7 @@ str fxstr_view_lsplit_view(str* str_p, const str* delim) {
     return left;
 }
 
-str fxstr_view_lsplit_buf(str* str_p, const str_buf_t* delim) {
+str fxstr_view_lsplit_buf(str* str_p, const String* delim) {
     const str delim_view = fxstr_view_from_chars(delim->data, delim->len);
     return fxstr_view_lsplit_view(str_p, &delim_view);
 }

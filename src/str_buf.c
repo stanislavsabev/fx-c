@@ -22,7 +22,7 @@ static inline size_t _str_compute_next_grow(size_t capacity_) {
  * @param str_p__ pointer to the str
  * @return void
  */
-void _str_grow(str_buf_t* str_p__, size_t capacity_) {
+void _str_grow(String* str_p__, size_t capacity_) {
     const size_t ln__ = capacity_ * sizeof(*str_p__->data);
     if (str_p__->data) {
         void* data_p__ = fxstr_stdlib_realloc(str_p__->data, ln__);
@@ -37,16 +37,16 @@ void _str_grow(str_buf_t* str_p__, size_t capacity_) {
     str_p__->capacity = capacity_;
 }
 
-extern inline str_buf_t fxstr_buf_null(void) {
-    return (str_buf_t){.capacity = 0, .len = 0, .data = NULL};
+extern inline String fxstr_buf_null(void) {
+    return (String){.capacity = 0, .len = 0, .data = NULL};
 }
 
-extern inline str_buf_t fxstr_buf_create(const char* cch_p, size_t len) {
+extern inline String fxstr_buf_create(const char* cch_p, size_t len) {
     return fxstr_buf_from_chars(cch_p, len);
 }
 
-str_buf_t fxstr_buf_acquire(char** ch_pp, size_t len) {
-    str_buf_t s__ = fxstr_buf_null();
+String fxstr_buf_acquire(char** ch_pp, size_t len) {
+    String s__ = fxstr_buf_null();
     if (len == 0 || *ch_pp == NULL) {
         return s__;
     }
@@ -56,8 +56,8 @@ str_buf_t fxstr_buf_acquire(char** ch_pp, size_t len) {
     return s__;
 }
 
-extern inline str_buf_t fxstr_buf_from_chars(const char* chars, size_t len) {
-    str_buf_t s__ = fxstr_buf_null();
+extern inline String fxstr_buf_from_chars(const char* chars, size_t len) {
+    String s__ = fxstr_buf_null();
     if (len == 0 || chars == NULL) {
         return s__;
     }
@@ -67,11 +67,11 @@ extern inline str_buf_t fxstr_buf_from_chars(const char* chars, size_t len) {
     return s__;
 }
 
-extern inline str_buf_t fxstr_buf_from_cstr(const char cstr[static 1]) {
+extern inline String fxstr_buf_from_cstr(const char cstr[static 1]) {
     return fxstr_buf_from_chars(cstr, strlen(cstr));
 }
 
-char* fxstr_buf_to_cstr_copy(const str_buf_t* str_p) {
+char* fxstr_buf_to_cstr_copy(const String* str_p) {
     if (fxstr_buf_is_null(str_p)) {
         return NULL;
     }
@@ -81,7 +81,7 @@ char* fxstr_buf_to_cstr_copy(const str_buf_t* str_p) {
     return cstr;
 }
 
-const char* fxstr_buf_to_cstr(str_buf_t* str_p) {
+const char* fxstr_buf_to_cstr(String* str_p) {
     if (fxstr_buf_is_null(str_p)) {
         return NULL;
     }
@@ -92,7 +92,7 @@ const char* fxstr_buf_to_cstr(str_buf_t* str_p) {
     return (const char*)str_p->data;
 }
 
-str fxstr_buf_to_str_view(const str_buf_t* str_p) {
+str fxstr_buf_to_str_view(const String* str_p) {
     return (str){.data = str_p->data, .len = str_p->len};
 }
 
@@ -101,7 +101,7 @@ str fxstr_buf_to_str_view(const str_buf_t* str_p) {
  * fxstr_stdlib_malloc', fxstr_stdlib_realloc' or `fxstr_stdlib_calloc'.
  * @return void
  */
-void fxstr_buf_free(str_buf_t* str_p) {
+void fxstr_buf_free(String* str_p) {
     if (str_p->data) {
         fxstr_stdlib_free(str_p->data);
         str_p->data = NULL;
@@ -117,35 +117,35 @@ void fxstr_buf_free(str_buf_t* str_p) {
  * fxstr_stdlib_malloc', fxstr_stdlib_realloc' or `fxstr_stdlib_calloc'.
  * @return void
  */
-void fxstr_buf_reserve(str_buf_t* str_p, size_t capacity) {
+void fxstr_buf_reserve(String* str_p, size_t capacity) {
     if (str_p->capacity < capacity) {
         _str_grow(str_p, capacity);
     }
 }
 
-str_buf_t fxstr_buf_lsplit_buf(str_buf_t* str_p, const str_buf_t* delim) {
+String fxstr_buf_lsplit_buf(String* str_p, const String* delim) {
     const str delim_view = fxstr_view_from_chars(delim->data, delim->len);
     return fxstr_buf_lsplit_view(str_p, &delim_view);
 }
-str_buf_t fxstr_buf_lsplit_view(str_buf_t* str_p, const str* delim) {
+String fxstr_buf_lsplit_view(String* str_p, const str* delim) {
     char* substr = (char*)fx_memmem(str_p->data, str_p->len, delim->data, delim->len);
     if (substr == NULL) {
         return fxstr_buf_null();
     }
     size_t left_len = substr - str_p->data;
-    str_buf_t left = fxstr_buf_from_chars(str_p->data, left_len);
+    String left = fxstr_buf_from_chars(str_p->data, left_len);
     size_t right_len = str_p->len - left_len - delim->len;
-    str_buf_t right = fxstr_buf_from_chars(substr + delim->len, right_len);
+    String right = fxstr_buf_from_chars(substr + delim->len, right_len);
     fxstr_buf_free(str_p);
     *str_p = right;
     return left;
 }
-str_buf_t fxstr_buf_lsplit_cstr(str_buf_t* str_p, const char* delim) {
+String fxstr_buf_lsplit_cstr(String* str_p, const char* delim) {
     str delim_view = fxstr_view_from_cstr(delim);
     return fxstr_buf_lsplit_view(str_p, &delim_view);
 }
 
-str_buf_t fxstr_buf_lsplit_chr(str_buf_t* str_p, const char cch_delim) {
+String fxstr_buf_lsplit_chr(String* str_p, const char cch_delim) {
     const str delim_view = fxstr_view_from_chars(&cch_delim, 1);
     return fxstr_buf_lsplit_view(str_p, &delim_view);
 }

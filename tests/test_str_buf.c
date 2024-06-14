@@ -11,7 +11,7 @@
 
 Test(str_buf_tests, fxstr_buf_null_create) {
     // test
-    str_buf_t actual = fxstr_buf_null();
+    String actual = fxstr_buf_null();
 
     // validate
     cr_expect(actual.data == NULL, "Expected actual.data == NULL");
@@ -23,7 +23,7 @@ Test(str_buf_tests, fxstr_buf_create_nominal) {
     // test
     const char* data = "abc";
     size_t ln = strlen(data);
-    str_buf_t actual = fxstr_buf_create(data, ln);
+    String actual = fxstr_buf_create(data, ln);
 
     // validate
     cr_expect(actual.len == ln, "Expected actual.len == ln");
@@ -39,7 +39,7 @@ Test(str_buf_tests, fxstr_buf_acquire_nominal) {
     char* buff = malloc(ln);
     memcpy(buff, "abc", ln);
 
-    str_buf_t actual = fxstr_buf_acquire(&buff, ln);
+    String actual = fxstr_buf_acquire(&buff, ln);
 
     // validate
     cr_expect(actual.data == buff, "Expected same pointer: actual.data == buff");
@@ -61,7 +61,7 @@ Test(str_buf_tests, fxstr_buf_from_chars_create) {
     size_t ln = 3;
 
     // test
-    str_buf_t actual = fxstr_buf_create(chars, ln);
+    String actual = fxstr_buf_create(chars, ln);
 
     // validate
     cr_expect(strncmp(actual.data, chars, ln) == 0,
@@ -75,7 +75,7 @@ Test(str_buf_tests, fxstr_buf_from_chars_create) {
 
 Test(str_buf_tests, fxstr_buf_to_cstr_copy_create) {
     // setup
-    str_buf_t strb = fxstr_buf_from_cstr("abc");
+    String strb = fxstr_buf_from_cstr("abc");
 
     // test
     char* actual = fxstr_buf_to_cstr_copy(&strb);
@@ -90,7 +90,7 @@ Test(str_buf_tests, fxstr_buf_to_cstr_copy_create) {
 
 Test(str_buf_tests, fxstr_buf_to_cstr_copy_from_null_is_null) {
     // setup
-    str_buf_t strb = fxstr_buf_null();
+    String strb = fxstr_buf_null();
 
     // test
     char* actual = fxstr_buf_to_cstr_copy(&strb);
@@ -102,7 +102,7 @@ Test(str_buf_tests, fxstr_buf_to_cstr_copy_from_null_is_null) {
 Test(str_buf_tests, fxstr_buf_to_cstr_ref_create) {
     // setup
     const char* cstr = "abcde";
-    str_buf_t strb = fxstr_buf_from_cstr(cstr);
+    String strb = fxstr_buf_from_cstr(cstr);
     // test
     const char* actual = fxstr_buf_to_cstr(&strb);
 
@@ -116,7 +116,7 @@ Test(str_buf_tests, fxstr_buf_to_cstr_ref_create) {
 
 Test(str_buf_tests, fxstr_buf_to_cstr_ref_from_null_is_null) {
     // setup
-    str_buf_t strb = fxstr_buf_null();
+    String strb = fxstr_buf_null();
 
     // test
     const char* actual = fxstr_buf_to_cstr(&strb);
@@ -127,7 +127,7 @@ Test(str_buf_tests, fxstr_buf_to_cstr_ref_from_null_is_null) {
 
 Test(str_buf_tests, fxstr_buf_to_str_view_create) {
     // setup
-    str_buf_t strb = fxstr_buf_from_cstr("abc");
+    String strb = fxstr_buf_from_cstr("abc");
 
     // test
     str actual = fxstr_buf_to_str_view(&strb);
@@ -143,7 +143,7 @@ Test(str_buf_tests, fxstr_buf_to_str_view_create) {
 
 Test(str_buf_tests, fxstr_buf_to_str_view_create_from_null_is_null) {
     // setup
-    str_buf_t strb = fxstr_buf_null();
+    String strb = fxstr_buf_null();
 
     // test
     str actual = fxstr_buf_to_str_view(&strb);
@@ -154,7 +154,7 @@ Test(str_buf_tests, fxstr_buf_to_str_view_create_from_null_is_null) {
 
 Test(str_buf_tests, fxstr_buf_free_nominal) {
     // setup
-    str_buf_t strb = fxstr_buf_from_cstr("abc");
+    String strb = fxstr_buf_from_cstr("abc");
 
     // test
     fxstr_buf_free(&strb);
@@ -165,7 +165,7 @@ Test(str_buf_tests, fxstr_buf_free_nominal) {
 
 Test(str_buf_tests, fxstr_buf_reserve_nominal) {
     // setup
-    str_buf_t strb = fxstr_buf_null();
+    String strb = fxstr_buf_null();
     size_t cap = 8;
 
     // test
