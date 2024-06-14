@@ -8,57 +8,57 @@
 #undef STRLIB_NO_SHORT_NAMES
 #endif
 
-Test(str_view_tests, fxstr_view_create_nominal) {
+Test(str_view_tests, strv_create_nominal) {
     char* chars = "abc";
     size_t ln = strlen(chars);
-    str s = fxstr_view_create(chars, ln);
+    str s = strv_create(chars, ln);
 
     cr_expect(s.len = ln, "Expected string s.len = ln");
     cr_expect((strncmp(chars, s.data, ln) == 0), "Expected strncmp(chars, s.data, ln) == 0");
 }
 
-Test(str_view_tests, fxstr_view_null_create) {
-    str nulstr = fxstr_view_null();
+Test(str_view_tests, strv_null_create) {
+    str nulstr = strv_null();
 
     cr_expect(nulstr.data == NULL, "Expected fxstr.data == NULL");
     cr_expect(nulstr.len == 0, "Expected fxstr.len == 0");
 }
 
-Test(str_view_tests, fxstr_view_from_chars_create) {
+Test(str_view_tests, strv_from_chars_create) {
     char* chars = "abc";
     size_t ln = strlen(chars);
-    str s = fxstr_view_from_chars(chars, ln);
+    str s = strv_from_chars(chars, ln);
 
     cr_expect(s.len = ln, "Expected string s.len = ln");
     cr_expect((strncmp(chars, s.data, ln) == 0), "Expected strncmp(chars, s.data, ln) == 0");
 }
 
-Test(str_view_tests, fxstr_view_from_chars_create_partial) {
+Test(str_view_tests, strv_from_chars_create_partial) {
     char* chars = "abcdef";
     size_t ln = strlen("abc");
-    str s = fxstr_view_from_chars(chars, ln);
+    str s = strv_from_chars(chars, ln);
 
     cr_expect(s.len = ln, "Expected string s.len = 3");
     cr_expect((strncmp("abc", s.data, ln) == 0), "Expected strncmp('abc', s.data, ln) == 0");
 }
 
-Test(str_view_tests, fxstr_view_from_cstr_create) {
+Test(str_view_tests, strv_from_cstr_create) {
     char* cstr = "hello";
     size_t ln = strlen(cstr);
 
-    str s = fxstr_view_from_cstr(cstr);
+    str s = strv_from_cstr(cstr);
     cr_expect(s.len = ln, "Expected string s.len = 5");
     cr_expect((strncmp(cstr, s.data, ln) == 0), "Expected strncmp(cstr, s.data, ln) == 0");
 }
 
-Test(str_view_tests, fxstr_view_to_cstr_create) {
+Test(str_view_tests, strv_to_cstr_create) {
     // setup
     char* cstr = "hello";
     size_t ln = strlen(cstr);
-    str src = fxstr_view_from_cstr(cstr);
+    str src = strv_from_cstr(cstr);
 
     // test
-    char* actual = fxstr_view_to_cstr(&src);
+    char* actual = strv_to_cstr(&src);
 
     // validate
     cr_expect(strlen(actual) == src.len, "Expected strlen(actual) = src.len");
