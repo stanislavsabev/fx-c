@@ -29,27 +29,12 @@ typedef struct str_s {
 /**
  * @brief struct with len and char data[64]
  */
-typedef struct str_buf_s {
+typedef struct String_s {
     size_t capacity;
     size_t len;
     char* data;
 } str_buf_t;
 
-/**
- * @brief struct with len and char data[64]
- */
-typedef struct str_buf64_s {
-    size_t len;
-    char data[64];
-} str_buf64_t;
-
-/**
- * @brief struct with len and char data[256]
- */
-typedef struct str_buf256_s {
-    size_t len;
-    char data[256];
-} str_buf256_t;
 
 #ifndef FX_NO_SHORT_NAMES
 
