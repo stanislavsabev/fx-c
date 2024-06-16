@@ -35,7 +35,7 @@ help: ##*Show this message, default
 							  else { printf "\t\033[36m%-12s\033[0m %s\n", $$1, $$2 }}' $(MAKEFILE_LIST)
 
 b: build ##
-build: static build-tests ## Build static library and tests
+build: static ## Build static
 
 rb: rebuild ##
 rebuild: clean build ## Clean and rebuild
@@ -56,7 +56,7 @@ $(TEST_BIN_DIR)/%: $(TEST_DIR)/%.c $(LIB)
 	$(CC) $(CFLAGS) $(LFLAGS) $< $(OBJS) -o $@ -lcriterion
 
 bt: build-tests ##
-build-tests: static $(TEST_BINS) ## Build tests
+build-tests: build $(TEST_BINS) ## Build tests
 
 t: test ##
 test: build-tests ## Run tests
