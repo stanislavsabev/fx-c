@@ -21,7 +21,7 @@
 /**
  * @brief struct with len and char data[]
  */
-typedef struct str_s {
+typedef struct {
     size_t len;
     const char* data;
 } str;
@@ -29,26 +29,26 @@ typedef struct str_s {
 /**
  * @brief struct with len and char data[64]
  */
-typedef struct String_s {
+typedef struct {
     size_t capacity;
     size_t len;
     char* data;
 } String;
 
 
-#ifndef STRLIB_NO_SHORT_NAMES
+#ifndef FXLIB_NO_SHORT_NAMES
 
 // str
-#define strv_null                        strlib_str_null
-#define strv_create(data, len)           strlib_str_create(data, len)
-#define strv_len(str_p)                  strlib_str_len(str_p)
-#define strv_is_empty(str_p)             strlib_str_is_empty(str_p)
-#define strv_is_null(str_p)              strlib_str_is_null(str_p)
-#define strv_from_chars(chars, len)      strlib_str_from_chars(chars, len)
-#define strv_from_cstr(cstr)             strlib_str_from_cstr(cstr)
-#define strv_to_cstr(str_p)              strlib_str_to_cstr(str_p)
-#define strv_lsplit(str_p, delim)        strlib_str_lsplit(str_p, delim)
-#define strv_lsplit_chr(str_p, delim)    strlib_str_lsplit_chr(str_p, cch_delim)
+#define str_null                        strlib_str_null
+#define str_create(data, len)           strlib_str_create(data, len)
+#define str_len(str_p)                  strlib_str_len(str_p)
+#define str_is_empty(str_p)             strlib_str_is_empty(str_p)
+#define str_is_null(str_p)              strlib_str_is_null(str_p)
+#define str_from_chars(chars, len)      strlib_str_from_chars(chars, len)
+#define str_from_cstr(cstr)             strlib_str_from_cstr(cstr)
+#define str_to_cstr(str_p)              strlib_str_to_cstr(str_p)
+#define str_lsplit(str_p, delim)        strlib_str_lsplit(str_p, delim)
+#define str_lsplit_chr(str_p, delim)    strlib_str_lsplit_chr(str_p, char_delim)
 
 // String
 #define String_null                        strlib_String_null
@@ -65,16 +65,16 @@ typedef struct String_s {
 #define String_free(str_p)                 strlib_String_free(str_p)
 #define String_reserve(str_p, capacity)    strlib_String_reserve(str_p, capacity)
 #define String_lsplit(str_p, delim)        strlib_String_lsplit(str_p, delim)
-#define String_lsplit_chr(str_p, delim)    strlib_String_lsplit_chr(str_p, cch_delim)
+#define String_lsplit_chr(str_p, char_delim)    strlib_String_lsplit_chr(str_p, char_delim)
 
 // Common
-#define str_len(str_p)                   fxstr_len(str_p)
-#define str_is_empty(str_p)              fxstr_is_empty(str_p)
-#define str_is_null(str_p)               fxstr_is_null(str_p)
-#define str_lsplit(str_p, delim)         fxstr_lsplit(str_p, delim)
-#define str_lsplit_chr(str_p, cch_delim) fxstr_lsplit_chr(str_p, cch_delim)
+#define str_len(str_p)                   strlib_len(str_p)
+#define str_is_empty(str_p)              strlib_is_empty(str_p)
+#define str_is_null(str_p)               strlib_is_null(str_p)
+#define str_lsplit(str_p, delim)         strlib_lsplit(str_p, delim)
+#define str_lsplit_chr(str_p, char_delim) strlib_lsplit_chr(str_p, char_delim)
 
-#endif   // STRLIB_NO_SHORT_NAMES
+#endif   // FXLIB_NO_SHORT_NAMES
 
 // str
 str strlib_str_null(void);
@@ -97,7 +97,7 @@ char* strlib_str_to_cstr(const str* fxstr_);
 str strlib_str_lsplit_view(str* str_p, const str* delim);
 str strlib_str_lsplit_buf(str* str_p, const String* delim);
 str strlib_str_lsplit_cstr(str* str_p, const char* delim);
-str strlib_str_lsplit_chr(str* str_p, const char cch_delim);
+str strlib_str_lsplit_chr(str* str_p, const char char_delim);
 
 // String
 String strlib_String_null(void);
@@ -123,9 +123,9 @@ void strlib_String_reserve(String* str_p, size_t capacity);
 
 // buf split left
 String strlib_String_lsplit_buf(String* str_p, const String* delim);
-String strlib_String_lsplit_view(String* str_p, const str* delim);
-String strlib_String_lsplit_cstr(String* str_p, const char* delim);
-String strlib_String_lsplit_chr(String* str_p, const char cch_delim);
+String strlib_String_lsplit_str(String* str_p, const str* delim);
+String strlib_String_lsplit_cstr(String* str_p, const char* cstr_delim);
+String strlib_String_lsplit_chr(String* str_p, const char char_delim);
 
 // generic
 #define fxstr_len(str_p) \
@@ -149,7 +149,7 @@ String strlib_String_lsplit_chr(String* str_p, const char cch_delim);
 #define strlib_String_split_left_(delim)             \
     _Generic((delim),                            \
             String*  : strlib_String_lsplit_buf,  \
-            str* : strlib_String_lsplit_view, \
+            str* : strlib_String_lsplit_str, \
             char*       : strlib_String_lsplit_cstr, \
             const char* : strlib_String_lsplit_cstr  \
     )
@@ -162,10 +162,10 @@ String strlib_String_lsplit_chr(String* str_p, const char cch_delim);
             str* : strlib_str_split_left_(delim), \
             String * : strlib_String_split_left_(delim))(str_p, delim)
 
-#define fxstr_lsplit_chr(str_p, cch_delim)           \
+#define fxstr_lsplit_chr(str_p, char_delim)           \
     _Generic((str_p),                            \
             str* : strlib_str_lsplit_chr, \
-            String * : strlib_String_lsplit_chr)(str_p, cch_delim)
+            String * : strlib_String_lsplit_chr)(str_p, char_delim)
 // clang-format on
 
 #endif   // _STRLIB_H_

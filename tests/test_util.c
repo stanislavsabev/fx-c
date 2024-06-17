@@ -5,8 +5,8 @@
 
 #include "util.h"
 
-#ifdef STRLIB_NO_SHORT_NAMES
-#undef STRLIB_NO_SHORT_NAMES
+#ifdef FXLIB_NO_SHORT_NAMES
+#undef FXLIB_NO_SHORT_NAMES
 #endif
 #define DEBUG
 

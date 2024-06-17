@@ -5,7 +5,7 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
-#ifndef STRLIB_NO_SHORT_NAMES
+#ifndef FXLIB_NO_SHORT_NAMES
 
 #define DEFINE_TRIVIAL_CLEANUP_FUNC           FX_DEFINE_TRIVIAL_CLEANUP_FUNC
 #define yes_no(b)                             fx_yes_no(b)
@@ -14,7 +14,7 @@
 #define rept_literal(hundreds, tens, ones, s) fx_rept_literal(hundreds, tens, ones, s)
 #define memmem(hay, hlen, needle, nlen)       fx_memmem(hay, hlen, needle, nlen)
 
-#endif   // STRLIB_NO_SHORT_NAMES
+#endif   // FXLIB_NO_SHORT_NAMES
 
 ///@brief Gets the address pointing to the container which accommodates the respective member
 ///@param ptr a pointer to container (struct)
