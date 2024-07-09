@@ -130,31 +130,31 @@ String strlib_String_lsplit_by_chr(String* str_p, const char char_delim);
 // clang-format off
 #define strlib_str_split_left_(delim)                   \
     _Generic((delim),                                   \
-            str* : strlib_str_lsplit_by_str,              \
-            String*  : strlib_str_lsplit_by_String,           \
-            char*       : strlib_str_lsplit_by_cstr,       \
-            const char* : strlib_str_lsplit_by_cstr        \
+            str* : strlib_str_lsplit_by_str,            \
+            String*  : strlib_str_lsplit_by_String,     \
+            char*       : strlib_str_lsplit_by_cstr,    \
+            const char* : strlib_str_lsplit_by_cstr     \
     )
 
 #define strlib_String_split_left_(delim)                \
     _Generic((delim),                                   \
             String*  : strlib_String_lsplit_by_String,  \
             str* : strlib_String_lsplit_by_str,         \
-            char*       : strlib_String_lsplit_by_cstr,    \
-            const char* : strlib_String_lsplit_by_cstr     \
+            char*       : strlib_String_lsplit_by_cstr, \
+            const char* : strlib_String_lsplit_by_cstr  \
     )
 
 #define strlib_String_lsplit(str_p, delim)  strlib_String_split_left_(delim)(str_p, delim)
 #define strlib_str_lsplit(str_p, delim) strlib_str_split_left_(delim)(str_p, delim)
 
-#define strlib_lsplit(str_p, delim)                      \
+#define strlib_lsplit(str_p, delim)                     \
 _Generic((str_p),                                       \
             str* : strlib_str_split_left_(delim),       \
             String * : strlib_String_split_left_(delim))(str_p, delim)
 
-#define strlib_lsplit_by_chr(str_p, char_delim)             \
+#define strlib_lsplit_by_chr(str_p, char_delim)         \
     _Generic((str_p),                                   \
-            str* : strlib_str_lsplit_by_chr,               \
+            str* : strlib_str_lsplit_by_chr,            \
             String * : strlib_String_lsplit_by_chr)(str_p, char_delim)
 // clang-format on
 
