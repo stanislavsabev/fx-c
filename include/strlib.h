@@ -38,31 +38,31 @@ typedef struct {
 #ifndef FXLIB_NO_SHORT_NAMES
 
 // str
-#define str_null                     strlib_str_null
-#define str_create(data, len)        strlib_str_create(data, len)
-#define str_len(str_p)               strlib_str_len(str_p)
-#define str_is_empty(str_p)          strlib_str_is_empty(str_p)
-#define str_is_null(str_p)           strlib_str_is_null(str_p)
-#define str_from_chars(chars, len)   strlib_str_from_chars(chars, len)
-#define str_from_cstr(cstr)          strlib_str_from_cstr(cstr)
-#define str_to_cstr(str_p)           strlib_str_to_cstr(str_p)
-#define str_lsplit(str_p, delim)     strlib_str_lsplit(str_p, delim)
+#define str_null                   strlib_str_null
+#define str_create(data, len)      strlib_str_create(data, len)
+#define str_len(str_p)             strlib_str_len(str_p)
+#define str_is_empty(str_p)        strlib_str_is_empty(str_p)
+#define str_is_null(str_p)         strlib_str_is_null(str_p)
+#define str_from_chars(chars, len) strlib_str_from_chars(chars, len)
+#define str_from_cstr(cstr)        strlib_str_from_cstr(cstr)
+#define str_to_cstr(str_p)         strlib_str_to_cstr(str_p)
+#define str_lsplit(str_p, delim)   strlib_str_lsplit(str_p, delim)
 
 // String
-#define String_null                          strlib_String_null
-#define String_create(cch_p, len)            strlib_String_create(cch_p, len)
-#define String_acquire(ch_pp, len)           strlib_String_acquire(ch_pp, len)
-#define String_len(str_p)                    strlib_String_len(str_p)
-#define String_is_empty(str_p)               strlib_String_is_empty(str_p)
-#define String_is_null(str_p)                strlib_String_is_null(str_p)
-#define String_from_chars(chars, len)        strlib_String_from_chars(chars, len)
-#define String_from_cstr(cstr)               strlib_String_from_cstr(cstr)
-#define String_to_cstr(str_p)                strlib_String_to_cstr(str_p)
-#define String_to_cstr_copy(str_p)           strlib_String_to_cstr_copy(str_p)
-#define String_to_str(str_p)                 strlib_String_to_str(str_p)
-#define String_free(str_p)                   strlib_String_free(str_p)
-#define String_reserve(str_p, capacity)      strlib_String_reserve(str_p, capacity)
-#define String_lsplit(str_p, delim)          strlib_String_lsplit(str_p, delim)
+#define String_null                     strlib_String_null
+#define String_create(cch_p, len)       strlib_String_create(cch_p, len)
+#define String_acquire(ch_pp, len)      strlib_String_acquire(ch_pp, len)
+#define String_len(str_p)               strlib_String_len(str_p)
+#define String_is_empty(str_p)          strlib_String_is_empty(str_p)
+#define String_is_null(str_p)           strlib_String_is_null(str_p)
+#define String_from_chars(chars, len)   strlib_String_from_chars(chars, len)
+#define String_from_cstr(cstr)          strlib_String_from_cstr(cstr)
+#define String_to_cstr(str_p)           strlib_String_to_cstr(str_p)
+#define String_to_cstr_copy(str_p)      strlib_String_to_cstr_copy(str_p)
+#define String_to_str(str_p)            strlib_String_to_str(str_p)
+#define String_free(str_p)              strlib_String_free(str_p)
+#define String_reserve(str_p, capacity) strlib_String_reserve(str_p, capacity)
+#define String_lsplit(str_p, delim)     strlib_String_lsplit(str_p, delim)
 
 #endif   // FXLIB_NO_SHORT_NAMES
 
