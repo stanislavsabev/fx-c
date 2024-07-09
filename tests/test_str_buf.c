@@ -75,25 +75,25 @@ Test(String_tests, String_from_chars_create) {
 
 Test(String_tests, String_to_cstr_copy_create) {
     // setup
-    String strb = String_from_cstr("abc");
+    String string = String_from_cstr("abc");
 
     // test
-    char* actual = String_to_cstr_copy(&strb);
+    char* actual = String_to_cstr_copy(&string);
 
     // validate
-    cr_expect(strncmp(actual, strb.data, strb.len) == 0);
+    cr_expect(strncmp(actual, string.data, string.len) == 0);
 
     // cleanup
     free(actual);
-    String_free(&strb);
+    String_free(&string);
 }
 
 Test(String_tests, String_to_cstr_copy_from_null_is_null) {
     // setup
-    String strb = String_null();
+    String string = String_null();
 
     // test
-    char* actual = String_to_cstr_copy(&strb);
+    char* actual = String_to_cstr_copy(&string);
 
     // validate
     cr_expect(actual == NULL, "Expect actual == NULL");
@@ -102,24 +102,24 @@ Test(String_tests, String_to_cstr_copy_from_null_is_null) {
 Test(String_tests, String_to_cstr_ref_create) {
     // setup
     const char* cstr = "abcde";
-    String strb = String_from_cstr(cstr);
+    String string = String_from_cstr(cstr);
     // test
-    const char* actual = String_to_cstr(&strb);
+    const char* actual = String_to_cstr(&string);
 
     // validate
-    cr_expect(strncmp(actual, strb.data, strb.len) == 0);
-    cr_expect(actual[strb.len] == '\0', "Expected actual[strb.len] = '\\0'");
+    cr_expect(strncmp(actual, string.data, string.len) == 0);
+    cr_expect(actual[string.len] == '\0', "Expected actual[string.len] = '\\0'");
 
     // cleanup
-    String_free(&strb);
+    String_free(&string);
 }
 
 Test(String_tests, String_to_cstr_ref_from_null_is_null) {
     // setup
-    String strb = String_null();
+    String string = String_null();
 
     // test
-    const char* actual = String_to_cstr(&strb);
+    const char* actual = String_to_cstr(&string);
 
     // validate
     cr_expect(actual == NULL, "Expect actual == NULL");
@@ -127,56 +127,56 @@ Test(String_tests, String_to_cstr_ref_from_null_is_null) {
 
 Test(String_tests, String_to_str_create) {
     // setup
-    String strb = String_from_cstr("abc");
+    String string = String_from_cstr("abc");
 
     // test
-    str actual = String_to_str(&strb);
+    str actual = String_to_str(&string);
 
     // validate
-    cr_expect(strncmp(actual.data, strb.data, strb.len) == 0,
-              "Expect strncmp(actual.data, strb.data, strb.len) == 0");
-    cr_expect(actual.len == strb.len, "Expect actual.len == strb.len");
+    cr_expect(strncmp(actual.data, string.data, string.len) == 0,
+              "Expect strncmp(actual.data, string.data, string.len) == 0");
+    cr_expect(actual.len == string.len, "Expect actual.len == string.len");
 
     // cleanup
-    String_free(&strb);
+    String_free(&string);
 }
 
 Test(String_tests, String_to_str_create_from_null_is_null) {
     // setup
-    String strb = String_null();
+    String string = String_null();
 
     // test
-    str actual = String_to_str(&strb);
+    str actual = String_to_str(&string);
 
     // validate
-    cr_expect(strv_is_null(&actual), "Expect strv_is_null(&actual)");
+    cr_expect(strlib_is_null(&actual), "Expect strlib_String_is_null(&actual)");
 }
 
 Test(String_tests, String_free_nominal) {
     // setup
-    String strb = String_from_cstr("abc");
+    String string = String_from_cstr("abc");
 
     // test
-    String_free(&strb);
+    String_free(&string);
 
     // validate
-    cr_expect(String_is_null(&strb), "Expect String_is_null(&strb)");
+    cr_expect(String_is_null(&string), "Expect String_is_null(&string)");
 }
 
 Test(String_tests, String_reserve_nominal) {
     // setup
-    String strb = String_null();
+    String string = String_null();
     size_t cap = 8;
 
     // test
-    String_reserve(&strb, cap);
+    String_reserve(&string, cap);
 
     // validate
-    cr_expect(!String_is_null(&strb), "Expect !String_is_null(&strb)");
-    cr_expect(strb.capacity == cap, "Expect strb.capacity == cap");
-    cr_expect(strb.data != NULL, "Expect strb.data != NULL");
-    cr_expect(strb.len == 0, "Expect strb.len == 0");
+    cr_expect(!String_is_null(&string), "Expect !String_is_null(&string)");
+    cr_expect(string.capacity == cap, "Expect string.capacity == cap");
+    cr_expect(string.data != NULL, "Expect string.data != NULL");
+    cr_expect(string.len == 0, "Expect string.len == 0");
 
     // cleanup
-    String_free(&strb);
+    String_free(&string);
 }

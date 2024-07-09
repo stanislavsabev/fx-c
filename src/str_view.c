@@ -27,7 +27,7 @@ char* strlib_str_to_cstr(const str* str_p) {
     return cstr;
 }
 
-str strlib_str_lsplit_view(str* str_p, const str* delim) {
+str strlib_str_lsplit_by_str(str* str_p, const str* delim) {
     char* substr = (char*)fx_memmem(str_p->data, str_p->len, delim->data, delim->len);
     if (substr == NULL) {
         return strlib_str_null();
@@ -46,17 +46,17 @@ str strlib_str_lsplit_view(str* str_p, const str* delim) {
     return left;
 }
 
-str strlib_str_lsplit_buf(str* str_p, const String* delim) {
+str strlib_str_lsplit_by_String(str* str_p, const String* delim) {
     const str delim_view = strlib_str_from_chars(delim->data, delim->len);
-    return strlib_str_lsplit_view(str_p, &delim_view);
+    return strlib_str_lsplit_by_str(str_p, &delim_view);
 }
 
-str strlib_str_lsplit_cstr(str* str_p, const char* delim) {
+str strlib_str_lsplit_by_cstr(str* str_p, const char* delim) {
     const str delim_view = strlib_str_from_cstr(delim);
-    return strlib_str_lsplit_view(str_p, &delim_view);
+    return strlib_str_lsplit_by_str(str_p, &delim_view);
 }
 
-str strlib_str_lsplit_chr(str* str_p, const char cch_delim) {
+str strlib_str_lsplit_by_chr(str* str_p, const char cch_delim) {
     const str delim_view = strlib_str_from_chars(&cch_delim, 1);
-    return strlib_str_lsplit_view(str_p, &delim_view);
+    return strlib_str_lsplit_by_str(str_p, &delim_view);
 }

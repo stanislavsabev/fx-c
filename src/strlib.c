@@ -2,10 +2,11 @@
 String implementation
 */
 
+#include "strlib.h"
+
 #include <assert.h>
 #include <string.h>
 
-#include "strlib.h"
 #include "util.h"
 
 #define _STRLIB_GROW_MULTIPLIER  2
@@ -101,7 +102,7 @@ str strlib_String_to_str(const String* str_p) {
 }
 
 /**
- * @brief Free an fxstr allocated by
+ * @brief Free a String
  * strlib_stdlib_malloc', strlib_stdlib_realloc' or `strlib_stdlib_calloc'.
  * @return void
  */
@@ -115,7 +116,7 @@ void strlib_String_free(String* str_p) {
 }
 
 /**
- * @brief Reserve an fxstr allocated by
+ * @brief Reserve a String
  * @param str_p pointer to the str
  * @param str_p pointer to the str
  * strlib_stdlib_malloc', strlib_stdlib_realloc' or `strlib_stdlib_calloc'.
@@ -127,11 +128,12 @@ void strlib_String_reserve(String* str_p, size_t capacity) {
     }
 }
 
-String strlib_String_lsplit_buf(String* str_p, const String* delim) {
+String strlib_String_lsplit_by_String(String* str_p, const String* delim) {
     const str delim_view = strlib_str_from_chars(delim->data, delim->len);
-    return strlib_String_lsplit_view(str_p, &delim_view);
+    return strlib_String_lsplit_by_str(str_p, &delim_view);
 }
-String strlib_String_lsplit_str(String* str_p, const str* delim) {
+
+String strlib_String_lsplit_by_str(String* str_p, const str* delim) {
     char* substr = (char*)memmem(str_p->data, str_p->len, delim->data, delim->len);
     if (substr == NULL) {
         return strlib_String_null();
@@ -144,12 +146,13 @@ String strlib_String_lsplit_str(String* str_p, const str* delim) {
     *str_p = right;
     return left;
 }
-String strlib_String_lsplit_cstr(String* str_p, const char* cstr_delim) {
-    str delim_view = strlib_str_from_cstr(delim);
-    return strlib_String_lsplit_view(str_p, &delim_view);
+
+String strlib_String_lsplit_by_cstr(String* str_p, const char* cstr_delim) {
+    str delim_view = strlib_str_from_cstr(cstr_delim);
+    return strlib_String_lsplit_by_str(str_p, &delim_view);
 }
 
-String strlib_String_lsplit_chr(String* str_p, const char cch_delim) {
+String strlib_String_lsplit_by_chr(String* str_p, const char cch_delim) {
     const str delim_view = strlib_str_from_chars(&cch_delim, 1);
-    return strlib_String_lsplit_view(str_p, &delim_view);
+    return strlib_String_lsplit_by_str(str_p, &delim_view);
 }
