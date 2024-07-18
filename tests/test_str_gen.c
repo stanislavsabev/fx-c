@@ -92,7 +92,7 @@ Test(str_gen_tests, str_lsplit_nominal) {
     size_t expect_right_len = strlen(expect_right_data);
     size_t delim_len = strlen(delim);
 
-    str s = strlib_str_from_chars(data, len);
+    str s = fx_str_from_chars(data, len);
 
     // test
     str actual = str_lsplit(&s, delim);
@@ -137,8 +137,8 @@ Test(str_gen_tests, fxstr_lsplit_buf_nominal) {
               "Expected actual.len + strv.len == len - delim_len");
 
     // // cleanup
-    strlib_String_free(&s);
-    strlib_String_free(&actual);
+    fx_String_free(&s);
+    fx_String_free(&actual);
 }
 
 Test(str_gen_tests, str_lsplit__non_existing) {
@@ -147,18 +147,18 @@ Test(str_gen_tests, str_lsplit__non_existing) {
     char* data = "hello_world";
     size_t len = strlen(data);
 
-    str s = strlib_str_from_chars(data, len);
+    str s = str_from_chars(data, len);
 
     // test
-    str actual = str_lsplit(&s, delim);
+    str actual = str_lsplit_by_cstr(&s, delim);
 
     // validate
     cr_expect(actual.len == 0, "Expected actual.len == 0");
     cr_expect(actual.data == NULL, "Expected actual.data == NULL");
-    cr_expect(strlib_is_null(&actual));
+    cr_expect(fx_is_null(&actual));
 }
 
-Test(str_gen_tests, fxstr_lsplit_buf_non_existing) {
+Test(str_gen_tests, fxstr_lsplit_by_cstr_non_existing) {
     // setup
     const char* delim = ".";
     char* data = "hello_world";
@@ -167,16 +167,16 @@ Test(str_gen_tests, fxstr_lsplit_buf_non_existing) {
     String s = String_from_chars(data, len);
 
     // test
-    String actual = String_lsplit(&s, delim);
+    String actual = String_lsplit_by_cstr(&s, delim);
 
     // validate
     cr_expect(actual.len == 0, "Expected actual.len == 0");
     cr_expect(actual.data == NULL, "Expected actual.data == NULL");
-    cr_expect(strlib_is_null(&actual));
+    cr_expect(fx_is_null(&actual));
 
     // // cleanup
-    strlib_String_free(&s);
-    strlib_String_free(&actual);
+    String_free(&s);
+    String_free(&actual);
 }
 
 Test(str_gen_tests, str_split_left_by_chr_nominal) {

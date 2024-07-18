@@ -149,7 +149,7 @@ Test(String_tests, String_to_str_create_from_null_is_null) {
     str actual = String_to_str(&string);
 
     // validate
-    cr_expect(strlib_is_null(&actual), "Expect strlib_String_is_null(&actual)");
+    cr_expect(String_is_null(&actual), "Expect String_is_null(&actual)");
 }
 
 Test(String_tests, String_free_nominal) {
