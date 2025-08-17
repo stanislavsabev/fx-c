@@ -64,14 +64,23 @@ u64 mem_align_forward(u64 value, u64 alignment);
 #endif // __FX_H__
 
 #ifndef FX_IMPLEMENTATION
+#include <assert.h>
 
 b8 mem_is_power_of_two(u64 value) {
     return (value & (value - 1)) == 0;
 }
 
-u64 mem_align_forward(u64 value, u64 alignment) {
-    if (alignment == 0) return value;
-    return (value + alignment - 1) & ~(alignment - 1);
+u64 mem_align_forward(u64 ptr, u64 alignment) {
+    assert(mem_is_power_of_two(alignment) && "Alignment must be a power of two");
+
+    u64 p, a, modulo;
+    p = ptr;
+    a = alignment;
+    modulo = p % (a - 1);
+    if (modulo != 0) {
+        p += a - modulo;
+    }
+    return p;
 }
 
 #endif // FX_IMPLEMENTATION
