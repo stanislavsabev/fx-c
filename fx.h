@@ -6,9 +6,9 @@
 #include <string.h>   // for memset
 
 typedef uint8_t u8;
-typedef uint8_t u16;
-typedef uint8_t u32;
-typedef uint8_t u64;
+typedef uint16_t u16;
+typedef uint32_t u32;
+typedef uint64_t u64;
 typedef int8_t i8;
 typedef int16_t i16;
 typedef int32_t i32;
@@ -22,7 +22,7 @@ typedef int64_t b64;
 typedef wchar_t wchar;
 typedef uintptr_t up64;
 typedef intptr_t p64;
-typedef size_t u64;
+typedef size_t usize;
 typedef ptrdiff_t i64;
 
 #define enum8(type)  u8
@@ -95,68 +95,6 @@ fn void arena_free(Arena *arena);
 fn void arena_reset(Arena *arena);
 #endif   // __FX_H__
 
-#ifndef FX_IMPLEMENTATION
-#include <assert.h>
-
-fn b8 mem_is_power_of_two(u64 value) {
-    return (value & (value - 1)) == 0;
-}
-
-fn u64 mem_align_forward(u64 ptr, u64 alignment) {
-    assert(mem_is_power_of_two(alignment) && "Alignment must be a power of two");
-
-    u64 p, a, modulo;
-    p = ptr;
-    a = alignment;
-    modulo = p % (a - 1);
-    if (modulo != 0) {
-        p += a - modulo;
-    }
-    return p;
-}
-
-fn void arena_init(Arena *a, void *buffer, u64 capacity) {
-    a->data = (u8 *)buffer;
-    a->capacity = capacity;
-    a->offset = 0;
-}
-
-fn void *arena_alloc_align(Arena *arena, u64 size, u64 alignment, b32 set_zero) {
-    up64 curr_ptr = (up64)(arena->data + arena->offset);
-    up64 offset = mem_align_forward(curr_ptr, alignment);
-    offset -= (up64)arena->data;   // Adjust offset to be relative to arena->data
-
-    if (offset + size > arena->capacity) {
-        return NULL;   // Not enough space in the arena
-    }
-
-    void *ptr = &arena->data[offset];
-    arena->offset = offset + size;
-
-    if (set_zero) {
-        mem_zero(ptr, size);
-    }
-    return ptr;
-}
-
-fn void arena_free(Arena *arena) {
-    // No-op, as we don't manage heap memory in the arena
-}
-
-fn void arena_reset(Arena *arena) {
-    arena->offset = 0;
-}
-
-fn ArenaSnapshot arena_snapshot_save(Arena *arena) {
-    ArenaSnapshot snapshot;
-    snapshot.arena = arena;
-    snapshot.offset = arena->offset;
-    return snapshot;
-}
-
-fn void arena_snapshot_restore(ArenaSnapshot snapshot) {
-    Arena *arena = snapshot.arena;
-    arena->offset = snapshot.offset;
-}
+#ifdef FX_IMPLEMENTATION
 
 #endif   // FX_IMPLEMENTATION
