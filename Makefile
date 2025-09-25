@@ -43,6 +43,11 @@ $(TEST_BIN_DIR)/%: $(TEST_DIR)/%.c $(SRCS)
 bt: build-tests ##
 build-tests: $(TEST_BINS) ## Build tests
 
+.PHONY: bm build-main
+bm: build-main ##
+build-main: $(TEST_BINS) ## Build tests
+
+
 
 .PHONY: t test
 t: test ##
@@ -64,3 +69,6 @@ format: ## Format with clang-format
 .PHONY: gh
 gh: ## Open GitHub
 	@firefox https://github.com/stanislavsabev/fx-c &
+
+.PHONY: b
+b: build-main ##
