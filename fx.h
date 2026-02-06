@@ -6,6 +6,7 @@
 #include <stdlib.h>   // for malloc
 #include <string.h>   // for memset
 
+// TYPES
 typedef uint8_t u8;
 typedef uint16_t u16;
 typedef uint32_t u32;
@@ -17,6 +18,7 @@ typedef int64_t i64;
 typedef float f32;
 typedef double f64;
 
+// BOOL values
 typedef int8_t b8;
 typedef int16_t b16;
 typedef int32_t b32;
@@ -37,15 +39,7 @@ typedef ptrdiff_t pdiff;
 #define MEM_DEFAULT_ALIGNMENT (2 * sizeof(void*))
 #endif
 
-#define alignof(type) __alignof__(type)
-
-#define mem_zero(ptr, size) memset((ptr), 0, (size))
-
-typedef struct String {
-    u8* data;
-    u64 len;
-} String;
-
+// ARENA structs
 typedef struct Arena {
     u8* buffer;
     u64 buffer_size;
@@ -57,23 +51,75 @@ typedef struct ArenaSnapshot {
     u64 offset;   // The offset at the time of the snapshot
 } ArenaSnapshot;
 
+// STRING
+typedef struct String {
+    usize len;
+    usize capacity;
+    char* data;
+} String;
+
+typedef struct StrView {
+    usize len;
+    const char* data;
+} StrView;
+
+// ARRAY
+typedef struct Array {
+    usize len;
+    void* data;
+} Array;
+
+// fn DECLARATION
 #define fn
 
-b8 mem_is_power_of_two(u64 value);
-u64 mem_align_forward(u64 ptr, u64 alignment);
-void arena_init(Arena* a, void* buffer, u64 capacity);
-void* arena_alloc_align(Arena* arena, u64 size, u64 alignment, b32 set_zero);
-void arena_free(Arena* arena);
-void arena_reset(Arena* arena);
-ArenaSnapshot arena_snapshot_save(Arena* arena);
-void arena_snapshot_restore(ArenaSnapshot snapshot);
+fn b8 mem_is_power_of_two(u64 value);
+fn u64 mem_align_forward(u64 ptr, u64 alignment);
 
+fn void arena_init(Arena* a, void* buffer, u64 capacity);
+fn void* arena_alloc_align(Arena* arena, u64 size, u64 alignment, b32 set_zero);
+fn void arena_free(Arena* arena);
+fn void arena_reset(Arena* arena);
+fn size_t arena_remaining(Arena* arena);
+fn ArenaSnapshot arena_snapshot_save(Arena* arena);
+fn void arena_snapshot_restore(ArenaSnapshot snapshot);
+fn void* arena_alloc(Arena* arena, u64 size);
+fn String* arena_alloc_string(Arena *arena, usize capacity);
+
+fn StrView strv_from_cstr(const char* cstr);
+fn StrView str_to_strv(const String *str);
+fn String* str_alloc(Arena* arena, usize capacity);
+
+// END fn DECLARATION
+
+// MACROS
+#define alignof(type) __alignof__(type)
+#define mem_zero(ptr, size) memset((ptr), 0, (size))
+
+// Arena helpers 
+#define arena_alloc_struct(arena, Type) \
+    (Type *)arena_alloc((arena), sizeof(Type))
+
+// String helpers
+#define STRV_NULL  (StrView){0}
+#define STRV_EMPTY (StrView){.data = "", .len = 0}
+
+#define Literal(cstr) strv_from_cstr((cstr))
+#define strv_is_null(sv) ((sv).data == NULL)
+#define strv_is_empty(sv) ((sv).len == 0)
+#define strv_is_null_or_empty(sv)  strv_is_null(sv) || strv_is_empty(sv)
+
+
+// HASH TABLE
+// - TBD
+
+// IMPLEMENTATION
 #ifdef FX_IMPLEMENTATION
 
 fn b8 mem_is_power_of_two(u64 value) {
     return (value & (value - 1)) == 0;
 }
 
+// Arena Implementation
 #include <assert.h>
 
 fn u64 mem_align_forward(u64 ptr, u64 alignment) {
@@ -89,11 +135,13 @@ fn u64 mem_align_forward(u64 ptr, u64 alignment) {
     return p;
 }
 
+
 fn void arena_init(Arena* a, void* buffer, u64 capacity) {
     a->buffer = (u8*)buffer;
     a->buffer_size = capacity;
     a->offset = 0;
 }
+
 
 fn void* arena_alloc_align(Arena* arena, u64 size, u64 alignment, b32 set_zero) {
     up64 curr_ptr = (up64)(arena->buffer + arena->offset);
@@ -113,22 +161,43 @@ fn void* arena_alloc_align(Arena* arena, u64 size, u64 alignment, b32 set_zero) 
     return ptr;
 }
 
+
 fn void* arena_alloc(Arena* arena, u64 size) {
     return arena_alloc_align(arena, size, MEM_DEFAULT_ALIGNMENT, true);
 }
+
+
+fn String* arena_alloc_string(Arena *arena, usize capacity) {
+    String* str = (String *)arena_alloc((arena), sizeof(String));
+    if (str) {
+        str->data = (char*)arena_alloc(arena, capacity);
+        if (!str->data) {
+            str->capacity = 0;
+            return NULL;
+        }
+        str->capacity = capacity;
+        str->len = 0;
+    }
+    return str;
+}
+
 
 fn void arena_free(Arena* arena) {
     // No-op, as we don't manage heap memory in the arena
     (void)arena;
 }
 
+
 // Get remaining space in arena
-size_t arena_remaining(Arena* arena) {
+fn size_t arena_remaining(Arena* arena) {
     return arena->buffer_size - arena->offset;
 }
+
+
 fn void arena_reset(Arena* arena) {
     arena->offset = 0;
 }
+
 
 fn ArenaSnapshot arena_snapshot_save(Arena* arena) {
     ArenaSnapshot snapshot;
@@ -137,9 +206,26 @@ fn ArenaSnapshot arena_snapshot_save(Arena* arena) {
     return snapshot;
 }
 
+
 fn void arena_snapshot_restore(ArenaSnapshot snapshot) {
     Arena* arena = snapshot.arena;
     arena->offset = snapshot.offset;
+}
+
+// String implementation
+
+fn String* str_alloc(Arena* arena, usize capacity) {
+    return arena_alloc_string(arena, capacity);
+}
+
+
+fn StrView strv_from_cstr(const char* cstr) {
+    if (cstr == NULL) return STRV_NULL;
+    return (StrView){.data = cstr, .len = strlen(cstr)};
+}
+
+fn StrView str_to_strv(const String *str) {
+    return (StrView){.data = str->data, .len = str->len};
 }
 
 #endif   // FX_IMPLEMENTATION

@@ -15,6 +15,9 @@ int main() {
     Arena a = {0};
     arena_init(&a, buffer, ARENA_CAPACITY);
 
+    printf("Size of String is %zu\n", sizeof(String));
+
+
     usize len = 100;
 
     // char *chars = (char *)arena_alloc(&a, sizeof(char) * len);
