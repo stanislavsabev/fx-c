@@ -14,10 +14,10 @@
 // }
 
 Test(fx_tests, test_mem_is_power_of_two) {
-  b32 actual = mem_is_power_of_two(4);
-  cr_expect(actual == true, "Expected true, 4 is power of two");
-  actual = mem_is_power_of_two(5);
-  cr_expect(actual == true, "Expected false, 5 is not power of two");
+    b32 actual = mem_is_power_of_two(4);
+    cr_expect(actual == true, "Expected true, 4 is power of two");
+    actual = mem_is_power_of_two(5);
+    cr_expect(actual == true, "Expected false, 5 is not power of two");
 }
 
 // Test(fx_tests, mem_align_forward) {

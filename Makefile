@@ -13,7 +13,7 @@ TEST_DIR = tests
 TEST_BIN_DIR = $(TEST_DIR)/bin
 
 # Source files and object files
-SRCS = fx.c
+SRCS = fx.h
 
 TEST_SRCS=$(wildcard $(TEST_DIR)/*.c)
 TEST_BINS = $(patsubst $(TEST_DIR)/%.c, $(TEST_BIN_DIR)/%, $(TEST_SRCS))
